@@ -1,0 +1,24 @@
+{
+  "name": "@workstreams-ai/slack-block-kit",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/workstreams-ai/slack-block-kit.git"
+  },
+  "keywords": [
+    "slack",
+    "block-kit",
+    "slack-api"
+  ],
+  "author": "Workstreams.ai",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/workstreams-ai/slack-block-kit/issues"
+  },
+  "homepage": "https://github.com/workstreams-ai/slack-block-kit#readme"
+}
