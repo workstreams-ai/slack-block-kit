@@ -44,3 +44,6 @@ Example of usage:
     )
   ]
 ```
+
+Will produce following message
+![Slack Block Kit message example](https://s3-us-west-2.amazonaws.com/files.workstreams.ai/public/block-kit-example.jpg)
