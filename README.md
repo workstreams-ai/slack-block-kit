@@ -1,9 +1,11 @@
 # Block Kit for Slack
 
-## This set of functions is based on Slack Blocks documentation
+### This set of functions is following `Slack Blocks documentation` see below
 
 block - https://api.slack.com/reference/messaging/blocks
+
 element - https://api.slack.com/reference/messaging/block-elements
+
 object - https://api.slack.com/reference/messaging/composition-objects
 
 All required parameters as specified in Slack Doc are passed in as arguments
@@ -103,4 +105,4 @@ const blocks = [
 ```
 
 Will produce following message
-![Slack Block Kit message example](https://s3-us-west-2.amazonaws.com/files.workstreams.ai/public/block-kit-example.jpg)
+![Slack Block Kit message example](https://s3-us-west-2.amazonaws.com/files.workstreams.ai/public/block-kit-agile-jedis.jpg)
