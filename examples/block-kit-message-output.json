@@ -1,0 +1,250 @@
+[
+   {
+      "text" : {
+         "type" : "mrkdwn",
+         "text" : "*<https://www.workstreams.ai?source=slack-block-kit|Agile Jedis>*\nLet's *rock* and *roll* towards better future!"
+      },
+      "fields" : [
+         {
+            "type" : "mrkdwn",
+            "text" : ":heavy_check_mark: *`get stuff done`* :tada:"
+         },
+         {
+            "type" : "mrkdwn",
+            "text" : ":arrow_double_up: *Priority* over *deadline* :timer_clock:"
+         }
+      ],
+      "accessory" : {
+         "placeholder" : {
+            "text" : "Select a date",
+            "type" : "plain_text"
+         },
+         "action_id" : "mission-start",
+         "type" : "datepicker",
+         "initial_date" : "2019-03-23"
+      },
+      "type" : "section"
+   },
+   {
+      "elements" : [
+         {
+            "placeholder" : {
+               "type" : "plain_text",
+               "text" : "Choose your Jedi"
+            },
+            "type" : "users_select",
+            "action_id" : "jedi-knight"
+         },
+         {
+            "placeholder" : {
+               "type" : "plain_text",
+               "text" : "Commanding team"
+            },
+            "type" : "conversations_select",
+            "action_id" : "commanding-team"
+         },
+         {
+            "placeholder" : {
+               "text" : "Choose your squad",
+               "type" : "plain_text"
+            },
+            "action_id" : "space-ship",
+            "type" : "channels_select"
+         },
+         {
+            "confirm" : {
+               "text" : {
+                  "text" : "You *will not* be able to change your weapon, choose wisely :thinking_face:",
+                  "type" : "mrkdwn"
+               },
+               "title" : {
+                  "text" : "Confirm your weapon",
+                  "type" : "plain_text"
+               },
+               "deny" : {
+                  "type" : "plain_text",
+                  "text" : "Let me think again"
+               },
+               "confirm" : {
+                  "text" : "Choose",
+                  "type" : "plain_text"
+               }
+            },
+            "options" : [
+               {
+                  "text" : {
+                     "text" : "Light sabre",
+                     "type" : "plain_text"
+                  },
+                  "value" : "light-sabre"
+               },
+               {
+                  "value" : "pac-cannon",
+                  "text" : {
+                     "type" : "plain_text",
+                     "text" : "PAC cannon"
+                  }
+               },
+               {
+                  "text" : {
+                     "text" : "Dark matter",
+                     "type" : "plain_text"
+                  },
+                  "value" : "dark-matter"
+               },
+               {
+                  "value" : "telepathy",
+                  "text" : {
+                     "text" : "Telepathy",
+                     "type" : "plain_text"
+                  }
+               }
+            ],
+            "action_id" : "weapon",
+            "type" : "static_select",
+            "initial_option" : {
+               "value" : "light-sabre",
+               "text" : {
+                  "text" : "Light sabre",
+                  "type" : "plain_text"
+               }
+            },
+            "placeholder" : {
+               "text" : "Choose your weapon",
+               "type" : "plain_text"
+            }
+         },
+         {
+            "placeholder" : {
+               "text" : "Special weapon",
+               "type" : "plain_text"
+            },
+            "type" : "external_select",
+            "action_id" : "special-weapon",
+            "min_query_length" : 3
+         }
+      ],
+      "type" : "actions",
+      "block_id" : "actions-2"
+   },
+   {
+      "image_url" : "https://bit.ly/2V2MqwX",
+      "alt_text" : "Jedi power",
+      "type" : "image"
+   },
+   {
+      "type" : "context",
+      "elements" : [
+         {
+            "text" : ":heavy_check_mark: The world better should be",
+            "type" : "mrkdwn"
+         },
+         {
+            "type" : "mrkdwn",
+            "text" : ":heavy_exclamation_mark: The air clean is not"
+         },
+         {
+            "text" : ":muscle: You all power have to change it",
+            "type" : "mrkdwn"
+         }
+      ]
+   },
+   {
+      "block_id" : "My-section-block#1",
+      "text" : {
+         "type" : "mrkdwn",
+         "text" : "*What great shall we build today*?"
+      },
+      "accessory" : {
+         "type" : "overflow",
+         "options" : [
+            {
+               "value" : "pyramid",
+               "text" : {
+                  "type" : "plain_text",
+                  "text" : "Pyramid"
+               }
+            },
+            {
+               "text" : {
+                  "type" : "plain_text",
+                  "text" : "Build solar power plant"
+               },
+               "value" : "solar-plant"
+            },
+            {
+               "value" : "new-society",
+               "text" : {
+                  "type" : "plain_text",
+                  "text" : "Sustainable society"
+               }
+            },
+            {
+               "text" : {
+                  "text" : "Build rocket to Mars",
+                  "type" : "plain_text"
+               },
+               "value" : "rocket"
+            },
+            {
+               "text" : {
+                  "type" : "plain_text",
+                  "text" : "Build wall"
+               },
+               "value" : "new-society"
+            }
+         ],
+         "action_id" : "mission-to-take"
+      },
+      "type" : "section"
+   },
+   {
+      "type" : "divider"
+   },
+   {
+      "elements" : [
+         {
+            "text" : {
+               "type" : "plain_text",
+               "text" : "Pyramid"
+            },
+            "type" : "button",
+            "action_id" : "pyramid"
+         },
+         {
+            "text" : {
+               "text" : "Solar power plant",
+               "type" : "plain_text"
+            },
+            "type" : "button",
+            "action_id" : "solar-plant"
+         },
+         {
+            "type" : "button",
+            "action_id" : "new-society",
+            "text" : {
+               "type" : "plain_text",
+               "text" : "Sustainable society"
+            }
+         },
+         {
+            "action_id" : "rocket",
+            "type" : "button",
+            "text" : {
+               "type" : "plain_text",
+               "text" : "Rocket to Mars"
+            }
+         },
+         {
+            "text" : {
+               "type" : "plain_text",
+               "text" : "Tremendous wall"
+            },
+            "action_id" : "wall",
+            "type" : "button"
+         }
+      ],
+      "type" : "actions",
+      "block_id" : "actions-1"
+   }
+]
