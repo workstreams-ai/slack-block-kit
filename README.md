@@ -9,13 +9,15 @@ element - https://api.slack.com/reference/messaging/block-elements
 object - https://api.slack.com/reference/messaging/composition-objects
 
 All required parameters as specified in Slack Doc are passed in as arguments
+
 Optional paramaters are passed in additional argument `opts` object.
+
 
 For further details on API see src folder.
 
-For interactive elements - *actionId is always first argument*
+For interactive elements - **actionId is always first argument**
 
-See `example` folder or example below for quick hints of usage.
+See `examples` folder or example below for quick hints of usage.
 
 ---
 Example of usage:
