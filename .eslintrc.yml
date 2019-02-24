@@ -1,0 +1,10 @@
+root: true
+extends: actano-base
+plugins:
+  - no-only-tests
+
+rules:
+  no-only-tests/no-only-tests: 'error'
+  no-unused-expressions: 'off'
+env:
+  mocha: true

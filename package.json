@@ -2,9 +2,12 @@
   "name": "slack-block-kit",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "test"
+    "clean": "rm -rf dist",
+    "build": "npm run clean && ./node_modules/.bin/babel -d dist src",
+    "test": "./node_modules/.bin/babel-node ./node_modules/.bin/_mocha test/*-test.js",
+    "coverage": "nyc npm run test"
   },
   "repository": {
     "type": "git",
@@ -20,5 +23,21 @@
   "bugs": {
     "url": "https://github.com/workstreams-ai/slack-block-kit/issues"
   },
-  "homepage": "https://github.com/workstreams-ai/slack-block-kit#readme"
+  "homepage": "https://github.com/workstreams-ai/slack-block-kit#readme",
+  "dependencies": {
+    "lodash": "^4.17.11"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-core": "^6.22.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-eslatest-node6": "^1.0.1",
+    "chai": "^4.2.0",
+    "eslint": "^5.14.1",
+    "eslint-config-actano-base": "^4.0.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-no-only-tests": "^2.1.0",
+    "mocha": "^6.0.1",
+    "nyc": "^13.3.0"
+  }
 }
