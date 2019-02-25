@@ -2,8 +2,6 @@ import { expect } from 'chai'
 import basicObject, {
   TEXT_FORMAT_PLAIN,
   TEXT_FORMAT_MRKDWN,
-  TEXT_PARSE_FULL,
-  TEXT_PARSE_NONE,
 } from '../src/object'
 
 const {
@@ -38,29 +36,28 @@ describe('Basic objects test suite', () => {
         .deep.eql(expectedObject)
     })
 
-    it('should render with plain_text, parse full and emoji emoji', () => {
+    it('should render with plain_text, verbatim and emoji', () => {
       const expectedObject = {
         type: TEXT_FORMAT_PLAIN,
         text: textValue,
         emoji: true,
-        parse: TEXT_PARSE_FULL,
+        verbatim: true,
       }
       expect(text(
         textValue, TEXT_FORMAT_PLAIN,
-        { emoji: true, parse: TEXT_PARSE_FULL },
+        { emoji: true, verbatim: true },
       )).deep.eql(expectedObject)
     })
 
-    it('should render with plain_text, parse none and emoji false', () => {
+    it('should render with plain_text, emoji false', () => {
       const expectedObject = {
         type: TEXT_FORMAT_PLAIN,
         text: textValue,
         emoji: false,
-        parse: TEXT_PARSE_NONE,
       }
       expect(text(
         textValue, TEXT_FORMAT_PLAIN,
-        { emoji: false, parse: TEXT_PARSE_NONE },
+        { emoji: false },
       )).deep.eql(expectedObject)
     })
     it('should throw error on undefined text', () => {
@@ -72,8 +69,8 @@ describe('Basic objects test suite', () => {
     it('should throw error on Unsupported emoji value', () => {
       expect(() => text(textValue, TEXT_FORMAT_PLAIN, { emoji: 'string' })).to.throw('Emoji has to be boolean')
     })
-    it('should throw error on Unsupported parse value', () => {
-      expect(() => text(textValue, TEXT_FORMAT_PLAIN, { parse: 'whatever-else' })).to.throw('Unsupported parse value: \'whatever-else\'')
+    it('should throw error on Unsupported verbatim value', () => {
+      expect(() => text(textValue, TEXT_FORMAT_PLAIN, { verbatim: 'whatever-else' })).to.throw('Verbatim has to be boolean')
     })
   })
 

@@ -2,9 +2,6 @@ import { omitBy, isUndefined, isString } from 'lodash'
 // text formats
 const TEXT_FORMAT_PLAIN = 'plain_text'
 const TEXT_FORMAT_MRKDWN = 'mrkdwn'
-// parse options
-const TEXT_PARSE_FULL = 'full'
-const TEXT_PARSE_NONE = 'none'
 
 /**
  * BlockKit Object specific error
@@ -22,11 +19,11 @@ class ObjectError extends Error {
  *
  * @param {string} textValue - required text value
  * @param {string} formatting - text format one of `plain_text` or `mrkdwn`
- * @param {object} options - emoji, parse
+ * @param {object} options - { emoji, verbatim }
  *
  * @returns {object}
  */
-const text = (textValue, formatting = TEXT_FORMAT_PLAIN, { emoji, parse } = {}) => {
+const text = (textValue, formatting = TEXT_FORMAT_PLAIN, { emoji, verbatim } = {}) => {
   if (!isString(textValue)) {
     throw new ObjectError(`There is no \`text\` without textValue, even empty string is a value: ${JSON.stringify(textValue)}`)
   }
@@ -38,16 +35,17 @@ const text = (textValue, formatting = TEXT_FORMAT_PLAIN, { emoji, parse } = {}) 
   if (!isUndefined(emoji) && typeof emoji !== 'boolean') {
     throw new ObjectError('Emoji has to be boolean')
   }
-
-  if (parse && ![TEXT_PARSE_FULL, TEXT_PARSE_NONE].includes(parse)) {
-    throw new ObjectError(`Unsupported parse value: '${parse}'`)
+  
+  if (!isUndefined(verbatim) && typeof verbatim !== 'boolean') {
+    throw new ObjectError('Verbatim has to be boolean')
   }
+
 
   return omitBy({
     type: formatting,
     text: textValue,
     emoji: (formatting === TEXT_FORMAT_PLAIN ? emoji : undefined),
-    parse,
+    verbatim,
   }, isUndefined)
 }
 
@@ -165,6 +163,4 @@ export default {
 export {
   TEXT_FORMAT_PLAIN,
   TEXT_FORMAT_MRKDWN,
-  TEXT_PARSE_FULL,
-  TEXT_PARSE_NONE,
 }
