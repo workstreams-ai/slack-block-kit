@@ -1,6 +1,7 @@
-import {
-  isObject, omit, omitBy, isUndefined,
-} from 'lodash'
+import isObject from 'lodash.isobject'
+import omit from 'lodash.omit'
+import omitBy from 'lodash.omitby'
+import isUndefined from 'lodash.isundefined'
 
 import object, {
   TEXT_FORMAT_MRKDWN, TEXT_FORMAT_PLAIN,

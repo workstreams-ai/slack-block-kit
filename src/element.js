@@ -1,6 +1,8 @@
-import {
-  omitBy, omit, isUndefined, isString,
-} from 'lodash'
+import omit from 'lodash.omit'
+import omitBy from 'lodash.omitby'
+import isString from 'lodash.isstring'
+import isUndefined from 'lodash.isundefined'
+
 import basicObject from './object'
 
 const { text } = basicObject
