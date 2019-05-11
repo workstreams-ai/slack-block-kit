@@ -3,11 +3,15 @@
   "version": "0.9.2",
   "description": "",
   "main": "dist/index.js",
+  "files": [
+    "/dist"
+  ],
   "scripts": {
     "clean": "rm -rf dist",
     "build": "npm run clean && ./node_modules/.bin/babel -d dist src",
     "test": "./node_modules/.bin/babel-node ./node_modules/.bin/_mocha test/*-test.js",
-    "coverage": "nyc npm run test"
+    "coverage": "nyc npm run test",
+    "prepublishOnly": "npm run coverage && npm run build"
   },
   "repository": {
     "type": "git",
