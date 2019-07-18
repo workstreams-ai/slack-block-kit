@@ -23,7 +23,7 @@ See `examples` folder or example below for quick hints of usage.
 Example of usage:
 
 ```javascript
-import { block, element, object, TEXT_FORMAT_MRKDW } from 'slack-block-kit'
+import { block, element, object, TEXT_FORMAT_MRKDWN } from 'slack-block-kit'
 
 const { text, confirm, option, optionGroup, optionGroups } = object
 const { 
