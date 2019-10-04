@@ -1,8 +1,12 @@
 import { expect } from 'chai'
 import element, {
-  ELEMENT_IMAGE, ELEMENT_BUTTON, ELEMENT_STATIC_SELECT, ELEMENT_USERS_SELECT,
+  ELEMENT_IMAGE, ELEMENT_BUTTON,
+  ELEMENT_STATIC_SELECT, ELEMENT_USERS_SELECT,
   ELEMENT_CHANNELS_SELECT, ELEMENT_CONVERSATIONS_SELECT, ELEMENT_EXTERNAL_SELECT,
-  ELEMENT_OVERFLOW, ELEMENT_DATEPICKER,
+  ELEMENT_EXTERNAL_MULTI_SELECT, ELEMENT_USERS_MULTI_SELECT,
+  ELEMENT_CHANNELS_MULTI_SELECT, ELEMENT_STATIC_MULTI_SELECT,
+  ELEMENT_CONVERSATIONS_MULTI_SELECT,
+  ELEMENT_OVERFLOW, ELEMENT_DATEPICKER, ELEMENT_PLAIN_TEXT_INPUT,
 } from '../src/element'
 
 import basicObject, {
@@ -10,8 +14,11 @@ import basicObject, {
 } from '../src/object'
 
 const {
-  image, button, staticSelect, usersSelect, channelsSelect, conversationsSelect,
-  externalSelect, overflow, datePicker,
+  image, button,
+  staticSelect, usersSelect, channelsSelect, conversationsSelect, externalSelect,
+  multiStaticSelect, multiUsersSelect, multiChannelsSelect,
+  multiExternalSelect, multiConversationsSelect,
+  overflow, datePicker, plainTextInput,
 } = element
 
 const {
@@ -131,6 +138,10 @@ describe('Elements test suit', () => {
   })
   context('Select menus', () => {
     const placeholderText = 'Choose option'
+    const initialUser = 'U1234'
+    const initialConversation = 'C1234'
+    const initialChannel = 'C1234'
+
     const options = [
       option('option 1', 'option-1'),
       option('option 2', 'option-2'),
@@ -231,7 +242,6 @@ describe('Elements test suit', () => {
     })
 
     context('Users select element', () => {
-      const initialUser = 'U1234'
       const basicExpectedObj = {
         ...selectBaseObject,
         type: ELEMENT_USERS_SELECT,
@@ -253,7 +263,6 @@ describe('Elements test suit', () => {
     })
 
     context('Conversations select', () => {
-      const initialConversation = 'C1234'
       const basicExpectedObj = {
         ...selectBaseObject,
         type: ELEMENT_CONVERSATIONS_SELECT,
@@ -279,7 +288,6 @@ describe('Elements test suit', () => {
     })
 
     context('Channels select', () => {
-      const initialChannel = 'C1234'
       const basicExpectedObj = {
         ...selectBaseObject,
         type: ELEMENT_CHANNELS_SELECT,
@@ -315,7 +323,6 @@ describe('Elements test suit', () => {
           confirm: confirmObj,
         })
       })
-
       it('should throw error on missing actionId', () => {
         expect(() => overflow(undefined, options)).to.throw('ActionId is required')
       })
@@ -323,6 +330,131 @@ describe('Elements test suit', () => {
         expect(() => overflow(actionId)).to.throw('Options have to be not-empty array of options objects')
         expect(() => overflow(actionId, {})).to.throw('Options have to be not-empty array of options objects')
         expect(() => overflow(actionId, [])).to.throw('Options have to be not-empty array of options objects')
+      })
+    })
+    context('multi selects with full options', () => {
+      const maxSelectedItems = 23
+      const initialOptions = [options[1], options[0]]
+      const multiSelectBaseObject = {
+        ...selectBaseObject,
+        confirm: confirmObj,
+        max_selected_items: maxSelectedItems,
+      }
+      it('should return static multi select menu', () => {
+        const expectedObject = {
+          ...multiSelectBaseObject,
+          type: ELEMENT_STATIC_MULTI_SELECT,
+          options,
+          initial_options: initialOptions,
+        }
+        const result = multiStaticSelect(
+          actionId,
+          placeholderText,
+          options,
+          { confirm: confirmObj, maxSelectedItems, initialOptions },
+        )
+
+        expect(result).eql(expectedObject)
+      })
+
+      it('should return external multi select menu', () => {
+        const expectedObject = {
+          ...multiSelectBaseObject,
+          min_query_length: 0,
+          type: ELEMENT_EXTERNAL_MULTI_SELECT,
+          initial_options: initialOptions,
+        }
+        const result = multiExternalSelect(
+          actionId,
+          placeholderText,
+          {
+            confirm: confirmObj,
+            maxSelectedItems,
+            initialOptions,
+            minQueryLength: 0,
+          },
+        )
+        expect(result).eql(expectedObject)
+      })
+
+      it('should return users multi select menu', () => {
+        const expectedObject = {
+          ...multiSelectBaseObject,
+          type: ELEMENT_USERS_MULTI_SELECT,
+          initial_users: [initialUser],
+        }
+        const result = multiUsersSelect(
+          actionId,
+          placeholderText,
+          {
+            confirm: confirmObj,
+            maxSelectedItems,
+            initialUsers: [initialUser],
+          },
+        )
+        expect(result).eql(expectedObject)
+      })
+
+      it('should return conversations multi select menu', () => {
+        const expectedObject = {
+          ...multiSelectBaseObject,
+          type: ELEMENT_CONVERSATIONS_MULTI_SELECT,
+          initial_conversations: [initialConversation],
+        }
+        const result = multiConversationsSelect(
+          actionId,
+          placeholderText,
+          {
+            confirm: confirmObj,
+            maxSelectedItems,
+            initialConversations: [initialConversation],
+          },
+        )
+        expect(result).eql(expectedObject)
+      })
+
+      it('should return channels multi select menu', () => {
+        const expectedObject = {
+          ...multiSelectBaseObject,
+          type: ELEMENT_CHANNELS_MULTI_SELECT,
+          initial_channels: [initialChannel],
+        }
+        const result = multiChannelsSelect(
+          actionId,
+          placeholderText,
+          {
+            confirm: confirmObj,
+            maxSelectedItems,
+            initialChannels: [initialChannel],
+          },
+        )
+        expect(result).eql(expectedObject)
+      })
+    })
+
+    context('Default multi selects - no options', () => {
+      const expectedTypes = {
+        [ELEMENT_EXTERNAL_MULTI_SELECT]: multiExternalSelect,
+        [ELEMENT_USERS_MULTI_SELECT]: multiUsersSelect,
+        [ELEMENT_CHANNELS_MULTI_SELECT]: multiChannelsSelect,
+        [ELEMENT_CONVERSATIONS_MULTI_SELECT]: multiConversationsSelect,
+      }
+      Object.keys(expectedTypes)
+        .forEach(type => it(`should return default ${type}`, () => {
+          const expectedObject = {
+            type,
+            ...selectBaseObject,
+          }
+          expect(expectedTypes[type](actionId, placeholderText)).eql(expectedObject)
+        }))
+
+      it('static select with options', () => {
+        const expectedObject = {
+          type: ELEMENT_STATIC_MULTI_SELECT,
+          ...selectBaseObject,
+          options,
+        }
+        expect(multiStaticSelect(actionId, placeholderText, options)).eql(expectedObject)
       })
     })
   })
@@ -355,6 +487,71 @@ describe('Elements test suit', () => {
       it('should throw error on missing actionId', () => {
         expect(() => datePicker(undefined)).to.throw('ActionId is required')
       })
+    })
+  })
+
+  context('input elements', () => {
+    const validActionId = 'myActionId'
+    const invalidActionId = true
+
+    it('should return basic plain text input', () => {
+      const textInput = plainTextInput(validActionId)
+      const expectedObject = {
+        type: ELEMENT_PLAIN_TEXT_INPUT,
+        action_id: validActionId,
+      }
+
+      expect(textInput).eql(expectedObject)
+    })
+
+    it('should return full plain text input', () => {
+      const inputValues = {
+        placeholderText: 'your favourite serie',
+        initialValue: 'Expanse',
+        multiLine: false,
+        minLength: 3,
+        maxLength: 100,
+      }
+
+      const textInput = plainTextInput(validActionId, inputValues)
+      expect(textInput).eql({
+        type: ELEMENT_PLAIN_TEXT_INPUT,
+        action_id: validActionId,
+        initial_value: inputValues.initialValue,
+        placeholder: text(inputValues.placeholderText),
+        multiline: inputValues.multiLine,
+        min_length: inputValues.minLength,
+        max_length: inputValues.maxLength,
+      })
+    })
+
+    it('should trhow an error on missing actionId', () => {
+      expect(() => plainTextInput()).to.throw('ActionId is required')
+      expect(() => plainTextInput(invalidActionId)).to.throw('ActionId is required')
+    })
+
+    it('should throw an error on wrong placeholder', () => {
+      expect(() => plainTextInput(validActionId, { placeholderText: true })).to.throw()
+    })
+
+    it('should throw an error on wrong initialValuer', () => {
+      expect(() => plainTextInput(validActionId, { initialValue: true })).to.throw()
+    })
+
+    it('should throw an error on too long minLength', () => {
+      expect(() => plainTextInput(validActionId, { minLength: 123123 })).to.throw('minLength parameter has to be number lower than 3000')
+    })
+
+    it('should throw an error on too long minLength', () => {
+      expect(() => plainTextInput(validActionId, { minLength: true })).to.throw('minLength parameter has to be number lower than 3000')
+    })
+
+    it('should throw an error on too long maxLength', () => {
+      expect(() => plainTextInput(validActionId, { maxLength: 'some value' })).to.throw('maxLength parameter has to be a number')
+    })
+
+    it('should throw an error on wrong multiLine', () => {
+      expect(() => plainTextInput(validActionId, { multiLine: 'string value' })).to.throw('Multiline parameter has to be boolean')
     })
   })
 })
