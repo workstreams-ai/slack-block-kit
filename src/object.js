@@ -1,6 +1,6 @@
-import omitBy from 'lodash.omitby'
 import isUndefined from 'lodash.isundefined'
 import isString from 'lodash.isstring'
+import { typedWithoutUndefined } from './utils'
 
 // text formats
 const TEXT_FORMAT_PLAIN = 'plain_text'
@@ -44,12 +44,11 @@ const text = (textValue, formatting = TEXT_FORMAT_PLAIN, { emoji, verbatim } = {
   }
 
 
-  return omitBy({
-    type: formatting,
+  return typedWithoutUndefined(formatting, {
     text: textValue,
     emoji: (formatting === TEXT_FORMAT_PLAIN ? emoji : undefined),
     verbatim,
-  }, isUndefined)
+  })
 }
 
 /**

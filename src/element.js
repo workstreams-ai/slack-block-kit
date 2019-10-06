@@ -1,8 +1,5 @@
 import omit from 'lodash.omit'
-import omitBy from 'lodash.omitby'
-import isString from 'lodash.isstring'
-import isUndefined from 'lodash.isundefined'
-
+import { isPresentString, typedWithoutUndefined } from './utils'
 import basicObject from './object'
 
 const { text } = basicObject
@@ -37,8 +34,6 @@ export const ELEMENT_PLAIN_TEXT_INPUT = 'plain_text_input'
 export class ElementError extends Error {
 
 }
-const isPresentString = (value, maxLength = 255) =>
-  value && isString(value) && (maxLength === 0 || value.length <= maxLength)
 
 const checkActionIdProp = (actionId) => {
   if (!isPresentString(actionId)) {
@@ -142,10 +137,6 @@ const buildBasicStaticSelect = (actionId, placeholderText, options, { optionGrou
 
   return element
 }
-const buildElement = (type, props) => omitBy({
-  type,
-  ...props,
-}, isUndefined)
 
 /**
  * image element
@@ -156,7 +147,7 @@ const buildElement = (type, props) => omitBy({
  * @returns {object}
  */
 const image = (imageUrl, altText) =>
-  isValidImage(imageUrl, altText) && buildElement(ELEMENT_IMAGE, {
+  isValidImage(imageUrl, altText) && typedWithoutUndefined(ELEMENT_IMAGE, {
     type: ELEMENT_IMAGE,
     image_url: imageUrl,
     alt_text: altText,
@@ -173,7 +164,7 @@ const image = (imageUrl, altText) =>
  * @returns {object}
  */
 const button = (actionId, textValue, { url, value, confirm } = {}) =>
-  isValidButton(actionId, textValue) && buildElement(ELEMENT_BUTTON, {
+  isValidButton(actionId, textValue) && typedWithoutUndefined(ELEMENT_BUTTON, {
     action_id: actionId,
     text: text(textValue),
     url,
@@ -195,7 +186,7 @@ const staticSelect = (
   actionId, placeholderText, options,
   { optionGroups, initialOption, confirm } = {},
 ) => checkSelectRequiredProps(actionId, placeholderText)
-  && buildElement(ELEMENT_STATIC_SELECT, {
+  && typedWithoutUndefined(ELEMENT_STATIC_SELECT, {
     ...buildBasicStaticSelect(actionId, placeholderText, options, { optionGroups }),
     initial_option: initialOption,
     confirm,
@@ -214,7 +205,7 @@ const externalSelect = (
   actionId, placeholderText,
   { initialOption, minQueryLength, confirm } = {},
 ) => checkSelectRequiredProps(actionId, placeholderText)
-  && buildElement(ELEMENT_EXTERNAL_SELECT, {
+  && typedWithoutUndefined(ELEMENT_EXTERNAL_SELECT, {
     action_id: actionId,
     placeholder: text(placeholderText),
     initial_option: initialOption,
@@ -231,13 +222,18 @@ const externalSelect = (
  *
  * @returns {object}
  */
-const usersSelect = (actionId, placeholderText, { initialUser, confirm } = {}) =>
-  checkSelectRequiredProps(actionId, placeholderText) && buildElement(ELEMENT_USERS_SELECT, {
-    action_id: actionId,
-    placeholder: text(placeholderText),
-    initial_user: initialUser,
-    confirm,
-  })
+const usersSelect = (
+  actionId,
+  placeholderText,
+  { initialUser, confirm } = {},
+) =>
+  checkSelectRequiredProps(actionId, placeholderText)
+    && typedWithoutUndefined(ELEMENT_USERS_SELECT, {
+      action_id: actionId,
+      placeholder: text(placeholderText),
+      initial_user: initialUser,
+      confirm,
+    })
 
 /**
  * Conversations select menu
@@ -250,7 +246,7 @@ const usersSelect = (actionId, placeholderText, { initialUser, confirm } = {}) =
  */
 const conversationsSelect = (actionId, placeholderText, { initialConversation, confirm } = {}) =>
   checkSelectRequiredProps(actionId, placeholderText)
-    && buildElement(ELEMENT_CONVERSATIONS_SELECT, {
+    && typedWithoutUndefined(ELEMENT_CONVERSATIONS_SELECT, {
       action_id: actionId,
       placeholder: text(placeholderText),
       initial_conversation: initialConversation,
@@ -268,7 +264,7 @@ const conversationsSelect = (actionId, placeholderText, { initialConversation, c
  */
 const channelsSelect = (actionId, placeholderText, { initialChannel, confirm } = {}) =>
   checkSelectRequiredProps(actionId, placeholderText)
-    && buildElement(ELEMENT_CHANNELS_SELECT, {
+    && typedWithoutUndefined(ELEMENT_CHANNELS_SELECT, {
       action_id: actionId,
       placeholder: text(placeholderText),
       initial_channel: initialChannel,
@@ -287,7 +283,7 @@ const channelsSelect = (actionId, placeholderText, { initialChannel, confirm } =
 const overflow = (actionId, options, { confirm } = {}) =>
   checkActionIdProp(actionId)
     && checkOptionsArray(options)
-    && buildElement(ELEMENT_OVERFLOW, {
+    && typedWithoutUndefined(ELEMENT_OVERFLOW, {
       action_id: actionId,
       options,
       confirm,
@@ -303,7 +299,7 @@ const overflow = (actionId, options, { confirm } = {}) =>
  */
 const datePicker = (actionId, { placeholderText, initialDate, confirm } = {}) =>
   checkActionIdProp(actionId)
-    && buildElement(ELEMENT_DATEPICKER, {
+    && typedWithoutUndefined(ELEMENT_DATEPICKER, {
       type: ELEMENT_DATEPICKER,
       action_id: actionId,
       placeholder: placeholderText ? text(placeholderText) : undefined,
@@ -325,7 +321,7 @@ const plainTextInput = (actionId, {
   && checkPlainInputText({
     placeholderText, initialValue, multiLine, minLength, maxLength,
   })
-  && buildElement(ELEMENT_PLAIN_TEXT_INPUT, {
+  && typedWithoutUndefined(ELEMENT_PLAIN_TEXT_INPUT, {
     action_id: actionId,
     placeholder: placeholderText ? text(placeholderText) : undefined,
     initial_value: initialValue,
@@ -353,7 +349,7 @@ const multiStaticSelect = (
     maxSelectedItems,
   } = {},
 ) => checkSelectRequiredProps(actionId, placeholderText)
-    && buildElement(ELEMENT_STATIC_MULTI_SELECT, {
+    && typedWithoutUndefined(ELEMENT_STATIC_MULTI_SELECT, {
       ...buildBasicStaticSelect(actionId, placeholderText, options, { optionGroups }),
       initial_options: initialOptions,
       confirm,
@@ -373,7 +369,7 @@ const multiChannelsSelect = (
   { initialChannels, confirm, maxSelectedItems } = {},
 ) =>
   checkSelectRequiredProps(actionId, placeholderText)
-    && buildElement(ELEMENT_CHANNELS_MULTI_SELECT, {
+    && typedWithoutUndefined(ELEMENT_CHANNELS_MULTI_SELECT, {
       action_id: actionId,
       placeholder: text(placeholderText),
       initial_channels: initialChannels,
@@ -394,7 +390,7 @@ const multiConversationsSelect = (
   placeholderText,
   { initialConversations, maxSelectedItems, confirm } = {},
 ) => checkSelectRequiredProps(actionId, placeholderText)
-  && buildElement(ELEMENT_CONVERSATIONS_MULTI_SELECT, {
+  && typedWithoutUndefined(ELEMENT_CONVERSATIONS_MULTI_SELECT, {
     action_id: actionId,
     placeholder: text(placeholderText),
     initial_conversations: initialConversations,
@@ -420,7 +416,7 @@ const multiExternalSelect = (
     maxSelectedItems,
   } = {},
 ) => checkSelectRequiredProps(actionId, placeholderText)
-  && buildElement(ELEMENT_EXTERNAL_MULTI_SELECT, {
+  && typedWithoutUndefined(ELEMENT_EXTERNAL_MULTI_SELECT, {
     action_id: actionId,
     placeholder: text(placeholderText),
     initial_options: initialOptions,
@@ -445,7 +441,7 @@ const multiUsersSelect = (
     maxSelectedItems,
   } = {},
 ) => checkSelectRequiredProps(actionId, placeholderText)
-  && buildElement(ELEMENT_USERS_MULTI_SELECT, {
+  && typedWithoutUndefined(ELEMENT_USERS_MULTI_SELECT, {
     action_id: actionId,
     placeholder: text(placeholderText),
     initial_users: initialUsers,
