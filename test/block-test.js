@@ -1,5 +1,10 @@
 import { expect } from 'chai'
-import blocks, {
+import {
+  section,
+  divider,
+  image,
+  actions,
+  context as blockContext,
   BLOCK_SECTION,
   BLOCK_DIVIDER,
   BLOCK_IMAGE,
@@ -8,17 +13,12 @@ import blocks, {
   buildBlock,
 } from '../src/block'
 
-import objects, {
-  TEXT_FORMAT_MRKDWN, TEXT_FORMAT_PLAIN,
+import {
+  text, TEXT_FORMAT_MRKDWN, TEXT_FORMAT_PLAIN,
 } from '../src/object'
-
 import elements from '../src/element'
 
-const { text } = objects
 const { button, usersSelect } = elements
-const {
-  section, divider, image, actions,
-} = blocks
 
 describe('BlockKit blocks', () => {
   context('blockBuilder', () => {
@@ -84,16 +84,16 @@ describe('BlockKit blocks', () => {
         ],
       }
 
-      const contextBlock = blocks.context([textObject])
+      const contextBlock = blockContext([textObject])
       expect(contextBlock).deep.eql(expectedBlock)
     })
     it('should throw error on invalid elements param', () => {
-      expect(() => blocks.context()).to.throw('Context needs to have an array of elements')
-      expect(() => blocks.context([])).to.throw('Context needs to have an array of elements')
-      expect(() => blocks.context({})).to.throw('Context needs to have an array of elements')
+      expect(() => blockContext()).to.throw('Context needs to have an array of elements')
+      expect(() => blockContext([])).to.throw('Context needs to have an array of elements')
+      expect(() => blockContext({})).to.throw('Context needs to have an array of elements')
 
-      expect(() => blocks.context(['hello'])).to.throw('Context elements can be only image or text')
-      expect(() => blocks.context([undefined, undefined])).to.throw('Context elements can be only image or text')
+      expect(() => blockContext(['hello'])).to.throw('Context elements can be only image or text')
+      expect(() => blockContext([undefined, undefined])).to.throw('Context elements can be only image or text')
     })
   })
 

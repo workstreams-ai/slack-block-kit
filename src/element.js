@@ -1,8 +1,8 @@
 import omit from 'lodash.omit'
+import isBoolean from 'lodash.isboolean'
+import isNumber from 'lodash.isnumber'
 import { isPresentString, typedWithoutUndefined } from './utils'
-import basicObject from './object'
-
-const { text } = basicObject
+import { text } from './object'
 
 // element types
 export const ELEMENT_IMAGE = 'image'
@@ -96,19 +96,19 @@ const checkPlainInputText = ({
   }
 
   if (multiLine) {
-    if (!(typeof multiLine === 'boolean')) {
+    if (!isBoolean(multiLine)) {
       throw new ElementError('Multiline parameter has to be boolean')
     }
   }
 
   if (minLength) {
-    if (!(typeof minLength === 'number') || minLength > 3000) {
+    if (!isNumber(minLength) || minLength > 3000) {
       throw new ElementError('minLength parameter has to be number lower than 3000')
     }
   }
 
   if (maxLength) {
-    if (!(typeof maxLength === 'number')) {
+    if (!isNumber(maxLength)) {
       throw new ElementError('maxLength parameter has to be a number')
     }
   }

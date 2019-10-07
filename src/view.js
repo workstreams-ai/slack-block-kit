@@ -1,9 +1,7 @@
 import isObject from 'lodash.isobject'
 import isBoolean from 'lodash.isboolean'
-import basicObject from './object'
+import { text } from './object'
 import { isPresentString, typedWithoutUndefined } from './utils'
-
-const { text } = basicObject
 
 /**
  * BlockKit View specific errors
@@ -15,6 +13,17 @@ export class ViewError extends Error {
 }
 
 export const VIEW_MODAL = 'modal'
+
+/**
+ * modal view
+ *
+ * @param string titleText - required title text
+ * @param [block] blocks - required 1-100 blocks
+ * @param {object} opts - { closeText, submitText,
+ *  privateMetadata, callbackId, clearOnClose, notifyOnClose, hash, externalId }
+ *
+ * @returns {object}
+ */
 
 export const modal = (
   titleText,
@@ -28,7 +37,7 @@ export const modal = (
     notifyOnClose,
     hash,
     externalId,
-  },
+  } = {},
 ) => {
   let privateMetadataString
 

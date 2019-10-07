@@ -9,7 +9,12 @@ import element, {
   ELEMENT_OVERFLOW, ELEMENT_DATEPICKER, ELEMENT_PLAIN_TEXT_INPUT,
 } from '../src/element'
 
-import basicObject, {
+import {
+  text,
+  confirm,
+  option,
+  optionGroup,
+  optionGroups,
   TEXT_FORMAT_PLAIN,
 } from '../src/object'
 
@@ -20,10 +25,6 @@ const {
   multiExternalSelect, multiConversationsSelect,
   overflow, datePicker, plainTextInput,
 } = element
-
-const {
-  text, confirm, option, optionGroup, optionGroups,
-} = basicObject
 
 describe('Elements test suit', () => {
   const actionId = 'my-action'
@@ -508,7 +509,7 @@ describe('Elements test suit', () => {
       const inputValues = {
         placeholderText: 'your favourite serie',
         initialValue: 'Expanse',
-        multiLine: false,
+        multiLine: true,
         minLength: 3,
         maxLength: 100,
       }

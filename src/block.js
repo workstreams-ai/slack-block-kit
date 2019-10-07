@@ -1,10 +1,9 @@
 import isObject from 'lodash.isobject'
 import omit from 'lodash.omit'
-import omitBy from 'lodash.omitby'
-import isUndefined from 'lodash.isundefined'
+import { typedWithoutUndefined } from './utils'
 
-import object, {
-  TEXT_FORMAT_MRKDWN, TEXT_FORMAT_PLAIN,
+import {
+  text, TEXT_FORMAT_MRKDWN, TEXT_FORMAT_PLAIN,
 } from './object'
 
 import element, {
@@ -55,17 +54,16 @@ const isValidBlockType = (type) => {
 }
 
 const buildBlock = (type, props = {}) =>
-  isValidBlockType(type) && omitBy({
-    type,
-    block_id: props.blockId,
+  isValidBlockType(type) && typedWithoutUndefined(type, {
     ...omit(props, ['blockId']),
-  }, isUndefined)
+    block_id: props.blockId,
+  })
 
-const isValidSection = (text) => {
+const isValidSection = (sectionText) => {
   if (
-    !text
-    || !isObject(text)
-    || ![TEXT_FORMAT_MRKDWN, TEXT_FORMAT_PLAIN].includes(text.type)
+    !sectionText
+    || !isObject(sectionText)
+    || ![TEXT_FORMAT_MRKDWN, TEXT_FORMAT_PLAIN].includes(sectionText.type)
   ) {
     throw new BlockError('Section has to contain text object')
   }
@@ -107,9 +105,9 @@ const isValidActions = (elements) => {
  *
  * @returns {object}
  */
-const section = (text, { blockId, fields, accessory } = {}) =>
-  isValidSection(text, { blockId, fields, accessory }) && buildBlock(BLOCK_SECTION, {
-    text,
+const section = (sectionText, { blockId, fields, accessory } = {}) =>
+  isValidSection(sectionText, { blockId, fields, accessory }) && buildBlock(BLOCK_SECTION, {
+    text: sectionText,
     blockId,
     fields,
     accessory,
@@ -164,7 +162,7 @@ const actions = (elements, { blockId } = {}) =>
 const image = (imageUrl, altText, { titleText, blockId } = {}) => buildBlock(BLOCK_IMAGE, {
   ...element.image(imageUrl, altText),
   blockId,
-  title: titleText ? object.text(titleText) : undefined,
+  title: titleText ? text(titleText) : undefined,
 })
 
 export default {
@@ -176,6 +174,11 @@ export default {
 }
 
 export {
+  section,
+  divider,
+  image,
+  actions,
+  context,
   buildBlock,
   BLOCK_SECTION,
   BLOCK_DIVIDER,

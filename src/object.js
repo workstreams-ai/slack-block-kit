@@ -1,4 +1,5 @@
 import isUndefined from 'lodash.isundefined'
+import isBoolean from 'lodash.isboolean'
 import isString from 'lodash.isstring'
 import { typedWithoutUndefined } from './utils'
 
@@ -35,11 +36,11 @@ const text = (textValue, formatting = TEXT_FORMAT_PLAIN, { emoji, verbatim } = {
     throw new ObjectError(`Unsupported formatting value: '${formatting}'`)
   }
 
-  if (!isUndefined(emoji) && typeof emoji !== 'boolean') {
+  if (!isUndefined(emoji) && !isBoolean(emoji)) {
     throw new ObjectError('Emoji has to be boolean')
   }
 
-  if (!isUndefined(verbatim) && typeof verbatim !== 'boolean') {
+  if (!isUndefined(verbatim) && !isBoolean(verbatim)) {
     throw new ObjectError('Verbatim has to be boolean')
   }
 
@@ -163,6 +164,11 @@ export default {
 }
 
 export {
+  text,
+  confirm,
+  option,
+  optionGroup,
+  optionGroups,
   TEXT_FORMAT_PLAIN,
   TEXT_FORMAT_MRKDWN,
 }
