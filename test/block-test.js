@@ -4,21 +4,21 @@ import {
   divider,
   image,
   actions,
+  input,
   context as blockContext,
   BLOCK_SECTION,
   BLOCK_DIVIDER,
   BLOCK_IMAGE,
   BLOCK_ACTIONS,
   BLOCK_CONTEXT,
+  BLOCK_INPUT,
   buildBlock,
 } from '../src/block'
 
 import {
   text, TEXT_FORMAT_MRKDWN, TEXT_FORMAT_PLAIN,
 } from '../src/object'
-import elements from '../src/element'
-
-const { button, usersSelect } = elements
+import { button, usersSelect, image as elImage } from '../src/element'
 
 describe('BlockKit blocks', () => {
   context('blockBuilder', () => {
@@ -124,7 +124,7 @@ describe('BlockKit blocks', () => {
         button(actionId, 'click me'),
       ]
       expect(() => actions(actionButtons)).to.throw('Each actions block can have only up to 5 elements')
-      expect(() => actions([elements.image('some-url', 'fake-image')])).to.throw('Invalid element for actions')
+      expect(() => actions([elImage('some-url', 'fake-image')])).to.throw('Invalid element for actions')
       expect(() => actions([undefined])).to.throw('Invalid element for actions')
     })
   })
@@ -153,6 +153,42 @@ describe('BlockKit blocks', () => {
       }
       expect(image(imageUrl, altText, { titleText, blockId: 'B1234' }))
         .deep.eql(expectedBlock)
+    })
+  })
+
+  context('input blocks', () => {
+    const labelText = 'some important input'
+    const element = usersSelect('my-action', 'Select user')
+    const hintText = 'some hint stuff'
+    const optional = true
+    const blockId = 'my-block-id'
+    const basicExpectedOutput = {
+      type: BLOCK_INPUT,
+      label: text(labelText),
+      element,
+    }
+
+    it('should return basic mandatory input', () => {
+      expect(input(labelText, element)).eql(basicExpectedOutput)
+    })
+
+    it('should return full input configured', () => {
+      const expectedOutput = {
+        ...basicExpectedOutput,
+        block_id: blockId,
+        hint: text(hintText),
+        optional: true,
+      }
+
+      expect(input(labelText, element, { hintText, optional, blockId })).eql(expectedOutput)
+    })
+
+    it('should prevent wrong elements', () => {
+      expect(() => input(labelText, button('click-me', 'click-me'))).to.throw('button is not supported input element')
+    })
+
+    it('should prevent no label input ', () => {
+      expect(() => input()).to.throw('Input block needs to have a labelText')
     })
   })
 })

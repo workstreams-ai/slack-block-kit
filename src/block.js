@@ -6,7 +6,7 @@ import {
   text, TEXT_FORMAT_MRKDWN, TEXT_FORMAT_PLAIN,
 } from './object'
 
-import element, {
+import {
   ELEMENT_IMAGE,
   ELEMENT_BUTTON,
   ELEMENT_OVERFLOW,
@@ -16,6 +16,13 @@ import element, {
   ELEMENT_CHANNELS_SELECT,
   ELEMENT_CONVERSATIONS_SELECT,
   ELEMENT_EXTERNAL_SELECT,
+  ELEMENT_STATIC_MULTI_SELECT,
+  ELEMENT_EXTERNAL_MULTI_SELECT,
+  ELEMENT_USERS_MULTI_SELECT,
+  ELEMENT_CONVERSATIONS_MULTI_SELECT,
+  ELEMENT_CHANNELS_MULTI_SELECT,
+  ELEMENT_PLAIN_TEXT_INPUT,
+  image as elImage,
 } from './element'
 
 // block types
@@ -24,9 +31,10 @@ const BLOCK_DIVIDER = 'divider'
 const BLOCK_IMAGE = 'image'
 const BLOCK_ACTIONS = 'actions'
 const BLOCK_CONTEXT = 'context'
+const BLOCK_INPUT = 'input'
 
 const SUPPORTED_BLOCKS = [
-  BLOCK_SECTION, BLOCK_DIVIDER, BLOCK_CONTEXT, BLOCK_ACTIONS, BLOCK_IMAGE,
+  BLOCK_SECTION, BLOCK_DIVIDER, BLOCK_CONTEXT, BLOCK_ACTIONS, BLOCK_IMAGE, BLOCK_INPUT,
 ]
 
 const VALID_CONTEXT_ELEMENTS = [ELEMENT_IMAGE, TEXT_FORMAT_MRKDWN, TEXT_FORMAT_PLAIN]
@@ -35,6 +43,15 @@ const VALID_ACTIONS_ELEMENTS = [
   ELEMENT_STATIC_SELECT, ELEMENT_CHANNELS_SELECT, ELEMENT_CONVERSATIONS_SELECT,
   ELEMENT_EXTERNAL_SELECT,
 ]
+
+const VALID_INPUT_ELEMENTS = [
+  ELEMENT_PLAIN_TEXT_INPUT, ELEMENT_STATIC_SELECT, ELEMENT_EXTERNAL_SELECT, ELEMENT_USERS_SELECT,
+  ELEMENT_CONVERSATIONS_SELECT, ELEMENT_CHANNELS_SELECT,
+  ELEMENT_STATIC_MULTI_SELECT, ELEMENT_EXTERNAL_MULTI_SELECT, ELEMENT_USERS_MULTI_SELECT,
+  ELEMENT_CHANNELS_MULTI_SELECT, ELEMENT_CONVERSATIONS_MULTI_SELECT, ELEMENT_USERS_MULTI_SELECT,
+]
+
+
 /**
  * Block specific error
  * catch it if you can
@@ -49,6 +66,17 @@ class BlockError extends Error {
 const isValidBlockType = (type) => {
   if (!SUPPORTED_BLOCKS.includes(type)) {
     throw new BlockError(`Unsupported block type '${type}'`)
+  }
+  return true
+}
+
+const isValidInputBlock = (labelText, element) => {
+  if (!labelText) {
+    throw new BlockError('Input block needs to have a labelText')
+  }
+
+  if (!VALID_INPUT_ELEMENTS.includes(element.type)) {
+    throw new BlockError(`${element.type} is not supported input element`)
   }
   return true
 }
@@ -160,10 +188,29 @@ const actions = (elements, { blockId } = {}) =>
  * @returns {object}
  */
 const image = (imageUrl, altText, { titleText, blockId } = {}) => buildBlock(BLOCK_IMAGE, {
-  ...element.image(imageUrl, altText),
+  ...elImage(imageUrl, altText),
   blockId,
   title: titleText ? text(titleText) : undefined,
 })
+
+/**
+ * Inputblock
+ *
+ * @param {string} labelText - required label text
+ * @param {object} element - required input element
+ * @param {object} opts - { hintText, blockId, optional }
+ *
+ * @returns {object}
+ */
+const input = (labelText, element, { hintText, blockId, optional } = {}) =>
+  isValidInputBlock(labelText, element) && buildBlock(BLOCK_INPUT, {
+    label: text(labelText),
+    element,
+    blockId,
+    hint: hintText ? text(hintText) : undefined,
+    optional,
+  })
+
 
 export default {
   section,
@@ -171,6 +218,7 @@ export default {
   image,
   actions,
   context,
+  input,
 }
 
 export {
@@ -179,10 +227,12 @@ export {
   image,
   actions,
   context,
+  input,
   buildBlock,
   BLOCK_SECTION,
   BLOCK_DIVIDER,
   BLOCK_IMAGE,
   BLOCK_ACTIONS,
   BLOCK_CONTEXT,
+  BLOCK_INPUT,
 }
