@@ -1,7 +1,7 @@
 # Block Kit for Slack
 
 ### This set of functions is following `Slack Blocks documentation` see below
-
+i
 block - https://api.slack.com/reference/messaging/blocks
 
 element - https://api.slack.com/reference/messaging/block-elements
@@ -180,4 +180,4 @@ const blocks = [
 ```
 
 Will produce following message
-![Slack Block Kit message example](https://s3-us-west-2.amazonaws.com/files.workstreams.ai/public/block-kit-agile-jedis.jpg)
+![Slack Block Kit message example](https://s3-us-west-2.amazonaws.com/files.workstreams.ai/public/block-kit-agile-jedis-v2.jpg)
