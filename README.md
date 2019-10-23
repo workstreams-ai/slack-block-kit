@@ -180,4 +180,6 @@ const blocks = [
 ```
 
 Will produce following message
+
+
 ![Slack Block Kit message example](https://s3-us-west-2.amazonaws.com/files.workstreams.ai/public/block-kit-agile-jedis-v2.jpg)
