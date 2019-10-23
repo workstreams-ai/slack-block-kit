@@ -106,3 +106,7 @@ export const modal = (
     external_id: externalId,
   })
 }
+
+export default {
+  modal,
+}

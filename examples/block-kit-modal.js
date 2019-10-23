@@ -1,7 +1,7 @@
 import createExampleBlocks from './example-blocks'
-import { modal } from '../src/view'
+import { view } from '../src'
 
-const modalPayload = modal(
+const modalPayload = view.modal(
   'Example modal',
   createExampleBlocks(),
   {

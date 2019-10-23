@@ -103,6 +103,79 @@ const blocks = [
     ],{
       blockId: 'actions-1',
     }),
+  section(
+    text('Make sure you choose the right gear'), {
+      accessory: multiStaticSelect(
+        'gear',
+        'Available gear', null, {
+          optionGroups: optionGroups([
+            optionGroup('Water', [
+              option('Surf board', 'surf-board'),
+              option('Dingy', 'dingy'),
+              option('Canoe', 'canoe'),
+            ]),
+            optionGroup('Earth', [
+              option('Long board', 'long-board'),
+              option('Bicycle', 'bicycle'),
+              option('Mile shoes', 'mile-shoes'),
+            ]),
+            optionGroup('Air', [
+              option('Kite', 'kite'),
+              option('Hover board', 'hover-board'),
+              option('Paraglide', 'paraglide'),
+            ]),
+          ]),
+          initialOptions: [
+            // option('Surf board', 'surf-board'),
+            // option('Long board', 'long-board'),
+            option('Kite', 'kite'),
+          ],
+
+          maxSelectedItems: 3,
+        },
+      ),
+      blockId: 'gear',
+    },
+  ),
+  section(
+    text('The power is in numbers!'), {
+      accessory: multiUsersSelect(
+        'members',
+        'Choose your squad members',
+        {
+          maxSelectedItems: 2,
+          confirm: confirm(
+            'Confirm your *team selection*',
+            TEXT_FORMAT_MRKDWN,
+            'You *will not* be able to change once you depart, choose wisely :thinking_face:',
+            'I know what I\'m doing',
+            'Let me think again',
+          ),
+        },
+      ),
+      blockId: 'teams',
+    },
+  ),
+  section(
+    text('Communication is key'), {
+      accessory: multiConversationsSelect(
+        'broadcast',
+        'Choose your rescue broadcast',
+        { maxSelectedItems: 2 },
+      ),
+      blockId: 'conversations',
+    },
+  ),
+  section(
+    text('Channel it like a PRO'), {
+      accessory: multiChannelsSelect(
+        'broadcast',
+        'Choose your radio channels',
+        { maxSelectedItems: 2 },
+      ),
+      blockId: 'channels',
+    },
+  ),
 ]
 ```
 
