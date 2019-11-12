@@ -159,17 +159,20 @@ const image = (imageUrl, altText) =>
  *
  * @param {string} actionId - required actionId
  * @param {string} textValue - required text for button
- * @param {object} options - { url, value, confirm }
+ * @param {object} options - { url, value, confirm, style }
  *
  * @returns {object}
  */
-const button = (actionId, textValue, { url, value, confirm } = {}) =>
+const button = (actionId, textValue, {
+  url, value, confirm, style,
+} = {}) =>
   isValidButton(actionId, textValue) && typedWithoutUndefined(ELEMENT_BUTTON, {
     action_id: actionId,
     text: text(textValue),
     url,
     value,
     confirm,
+    style,
   })
 
 /**
