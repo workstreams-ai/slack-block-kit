@@ -13,6 +13,65 @@ export class ViewError extends Error {
 }
 
 export const VIEW_MODAL = 'modal'
+export const VIEW_HOME = 'home'
+
+const serializePrivateMetadata = (privateMetadata) => {
+  if (isObject(privateMetadata)) {
+    return JSON.stringify(privateMetadata)
+  }
+  return privateMetadata
+}
+
+/**
+ * home tab view
+ *
+ * @param [block] blocks - required 1-100 blocks
+ * @param {object} opts - { privateMetadata, callbackId, externalId }
+ *
+ * @returns {object}
+ */
+
+export const home = (
+  blocks = [],
+  {
+    privateMetadata,
+    callbackId,
+    externalId,
+  } = {},
+) => {
+  if (!blocks.length) {
+    throw new ViewError('Provide at least 1 block')
+  }
+
+  if (blocks.length > 100) {
+    throw new ViewError('Not more than 100 blocks are allowed')
+  }
+
+  if (callbackId && !isPresentString(callbackId)) {
+    throw new ViewError('CallbackId has to be string with max length 255 characters')
+  }
+
+  if (externalId && !isPresentString(externalId, 0)) {
+    throw new ViewError('externalId has to be a string')
+  }
+  let privateMetadataString
+
+  if (privateMetadata) {
+    privateMetadataString = serializePrivateMetadata(privateMetadata)
+
+    if (!isPresentString(privateMetadataString, 3000)) {
+      throw new ViewError('PrivateMmetadata max length is 3000 characters')
+    }
+  }
+
+  return typedWithoutUndefined(VIEW_HOME, {
+    blocks,
+    private_metadata: privateMetadataString || undefined,
+    callback_id: callbackId,
+    external_id: externalId,
+  })
+}
+
 
 /**
  * modal view
@@ -62,11 +121,7 @@ export const modal = (
   }
 
   if (privateMetadata) {
-    if (isObject(privateMetadata)) {
-      privateMetadataString = JSON.stringify(privateMetadata)
-    } else {
-      privateMetadataString = privateMetadata
-    }
+    privateMetadataString = serializePrivateMetadata(privateMetadata)
 
     if (!isPresentString(privateMetadataString, 3000)) {
       throw new ViewError('PrivateMmetadata max length is 3000 characters')
@@ -109,4 +164,5 @@ export const modal = (
 
 export default {
   modal,
+  home,
 }
