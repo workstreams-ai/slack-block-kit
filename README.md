@@ -1,14 +1,14 @@
 # Block Kit for Slack
 
 ### This set of functions is following `Slack Block kit documentation` see below
+i
+[blocks (section, divider, image, actions, context, input)](https://api.slack.com/reference/block-kit/blocks)
 
-[Slack Block kit blocks (section, divider, image, actions, context, input)](https://api.slack.com/reference/block-kit/blocks)
+[elements (selects, buttons, overflow, datepicker, image, plainTextInput, checkboxes, radiobuttons)](https://api.slack.com/reference/block-kit/block-elements)
 
-[Slack Block kit elements (selects, buttons, overflow, datepicker, image, plainTextInput, checkboxes, radiobuttons)](https://api.slack.com/reference/block-kit/block-elements)
+[objects (text, option, confirm)](https://api.slack.com/reference/block-kit/composition-objects)
 
-[Slack Block kit objects (text, option, confirm)](https://api.slack.com/reference/block-kit/composition-objects)
-
-[Slack Block kit views (modals, app home tab)](https://api.slack.com/reference/surfaces/views)
+[views (modals, app home tab)](https://api.slack.com/reference/surfaces/views)
 
 
 All **required parameters** as specified in Slack Block kit documentation are passed in as arguments.
