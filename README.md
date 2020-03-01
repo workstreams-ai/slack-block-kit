@@ -2,10 +2,14 @@
 
 ### This set of functions is following `Slack Block kit documentation` see below
 
-block - https://api.slack.com/reference/block-kit/blocks
-element - https://api.slack.com/reference/block-kit/block-elements
-object - https://api.slack.com/reference/block-kit/composition-objects
-view - https://api.slack.com/reference/surfaces/views
+[Slack Block kit blocks](https://api.slack.com/reference/block-kit/blocks)
+
+[Slack Block kit elements](https://api.slack.com/reference/block-kit/block-elements)
+
+[Slack Block kit objects](https://api.slack.com/reference/block-kit/composition-objects)
+
+[Slack Block kit views](https://api.slack.com/reference/surfaces/views)
+
 
 All **required parameters** as specified in Slack Block kit documentation are passed in as arguments.
 _Optional_ paramaters are passed in additional argument `opts` object.
