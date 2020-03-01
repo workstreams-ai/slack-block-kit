@@ -1,23 +1,28 @@
 # Block Kit for Slack
 
-### This set of functions is following `Slack Blocks documentation` see below
-i
-block - https://api.slack.com/reference/messaging/blocks
+### This set of functions is following `Slack Block kit documentation` see below
 
-element - https://api.slack.com/reference/messaging/block-elements
+block - https://api.slack.com/reference/block-kit/blocks
+element - https://api.slack.com/reference/block-kit/block-elements
+object - https://api.slack.com/reference/block-kit/composition-objects
+view - https://api.slack.com/reference/surfaces/views
 
-object - https://api.slack.com/reference/messaging/composition-objects
+All **required parameters** as specified in Slack Block kit documentation are passed in as arguments.
+_Optional_ paramaters are passed in additional argument `opts` object.
 
-All required parameters as specified in Slack Doc are passed in as arguments
+Generic example of required and optional arguments:
 
-Optional paramaters are passed in additional argument `opts` object.
+```javascript
+  function(requiredParam1, requiredParam2, requiredParam3, { optionalParam1, optionalParam2 })
+```
 
+For further details on API see [src](https://github.com/workstreams-ai/slack-block-kit/tree/master/src) folder.
 
-For further details on API see src folder.
 
 For interactive elements - **actionId is always first argument**
+Check [Slack docs on support of Interactive elements](https://api.slack.com/reference/block-kit/interactive-components)
 
-See `examples` folder or example below for quick hints of usage.
+See [examples](https://github.com/workstreams-ai/slack-block-kit/tree/master/examples) folder or example below for quick hints of usage.
 
 ---
 Example of usage:
