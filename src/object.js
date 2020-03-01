@@ -1,7 +1,7 @@
 import isUndefined from 'lodash.isundefined'
 import isBoolean from 'lodash.isboolean'
 import isString from 'lodash.isstring'
-import { typedWithoutUndefined } from './utils'
+import { withoutUndefined, isPresentString, typedWithoutUndefined } from './utils'
 
 // text formats
 const TEXT_FORMAT_PLAIN = 'plain_text'
@@ -60,15 +60,27 @@ const text = (textValue, formatting = TEXT_FORMAT_PLAIN, { emoji, verbatim } = {
  *
  * @returns {object}
  */
-const option = (textValue, value) => {
+const option = (textValue, value, { descriptionText, url } = {}) => {
+  let description
+
   if (!isString(value)) {
     throw new ObjectError('Value has to be a string')
   }
 
-  return {
+  if (descriptionText) {
+    if (!isPresentString(descriptionText, 75)) {
+      throw new ObjectError('Option description text has to be string, max 75 characters')
+    }
+
+    description = text(descriptionText)
+  }
+
+  return withoutUndefined({
     text: text(textValue),
     value,
-  }
+    description,
+    url,
+  })
 }
 
 /**
@@ -127,24 +139,24 @@ const optionGroups = (optionGroupObjects) => {
  * @returns {undefined}
  */
 const confirm = (titleText, textType, textValue, confirmText, denyText) => {
-  if (!isString(titleText)) {
-    throw new ObjectError('TitleText has to be a string')
+  if (!isPresentString(titleText, 100)) {
+    throw new ObjectError('TitleText has to be a string. max 100 characters')
   }
 
   if (!isString(textType)) {
     throw new ObjectError('TextType has to be a string')
   }
 
-  if (!isString(textValue)) {
-    throw new ObjectError('TextValue has to be a string')
+  if (!isPresentString(textValue, 300)) {
+    throw new ObjectError('TextValue has to be a string, max 300 characters')
   }
 
-  if (!isString(confirmText)) {
-    throw new ObjectError('ConfirmText has to be a string')
+  if (!isPresentString(confirmText, 30)) {
+    throw new ObjectError('ConfirmText has to be a string, max 30 characters')
   }
 
-  if (!isString(denyText)) {
-    throw new ObjectError('DenyText has to be a string')
+  if (!isPresentString(denyText, 30)) {
+    throw new ObjectError('DenyText has to be a string, max 30 charachters')
   }
 
   return {

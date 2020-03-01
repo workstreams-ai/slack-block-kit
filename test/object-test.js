@@ -1,12 +1,13 @@
 import { expect } from 'chai'
-import basicObject, {
+import {
   TEXT_FORMAT_PLAIN,
   TEXT_FORMAT_MRKDWN,
+  text,
+  option,
+  optionGroup,
+  optionGroups,
+  confirm,
 } from '../src/object'
-
-const {
-  text, option, optionGroup, optionGroups, confirm,
-} = basicObject
 
 describe('Basic objects test suite', () => {
   context('text object', () => {
@@ -93,6 +94,51 @@ describe('Basic objects test suite', () => {
     it('should throw error for undefined value', () => {
       expect(() => option(textValue, undefined)).to.throw('Value has to be a string')
     })
+
+    it('should return option with descriptionText', () => {
+      const descriptionText = 'Here is some description of the option above'
+      const expectedObject = {
+        text: {
+          type: TEXT_FORMAT_PLAIN,
+          text: textValue,
+        },
+        value,
+        description: {
+          type: TEXT_FORMAT_PLAIN,
+          text: descriptionText,
+        },
+      }
+
+      expect(option(textValue, value, { descriptionText })).deep.eql(expectedObject)
+    })
+
+    it('should return option with url', () => {
+      const url = 'https://www.workstreams.ai'
+      const expectedObject = {
+        text: {
+          type: TEXT_FORMAT_PLAIN,
+          text: textValue,
+        },
+        value,
+        url,
+      }
+
+      expect(option(textValue, value, { url })).deep.eql(expectedObject)
+    })
+
+    it('should throw error when descriptionText is not a string', () => {
+      const descriptionText = {}
+      expect(() => option(textValue, value, { descriptionText })).to.throw('Option description text has to be string, max 75 characters')
+    })
+
+    it('should throw error when descriptionText being too long', () => {
+      const descriptionTextSample = 'Super long text over 3K characters'
+      let descriptionText = ''
+      for (let i = 0; i < 100; i += 1) {
+        descriptionText += descriptionTextSample
+      }
+      expect(() => option(textValue, value, { descriptionText })).to.throw('Option description text has to be string, max 75 characters')
+    })
   })
 
   context('option group object', () => {
@@ -117,11 +163,10 @@ describe('Basic objects test suite', () => {
         ],
       }
 
-      const resultObject = basicObject
-        .optionGroup(
-          labelText,
-          [option(optionText, optionValue)],
-        )
+      const resultObject = optionGroup(
+        labelText,
+        [option(optionText, optionValue)],
+      )
 
       expect(resultObject).deep.eql(expectedObject)
     })
@@ -133,7 +178,7 @@ describe('Basic objects test suite', () => {
         },
         options: [],
       }
-      expect(basicObject.optionGroup(labelText)).deep.eql(expectedObject)
+      expect(optionGroup(labelText)).deep.eql(expectedObject)
     })
     it('should throw an error if the label is not a string', () => {
       expect(() => optionGroup(undefined, [])).to.throw('Label has to be a string')

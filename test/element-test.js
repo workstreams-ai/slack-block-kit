@@ -1,6 +1,11 @@
 import { expect } from 'chai'
-import element, {
-  ELEMENT_IMAGE, ELEMENT_BUTTON,
+import {
+  image, button, radioButtons, checkboxes,
+  staticSelect, usersSelect, channelsSelect, conversationsSelect, externalSelect,
+  multiStaticSelect, multiUsersSelect, multiChannelsSelect,
+  multiExternalSelect, multiConversationsSelect,
+  overflow, datePicker, plainTextInput,
+  ELEMENT_IMAGE, ELEMENT_BUTTON, ELEMENT_RADIO_BUTTONS, ELEMENT_CHECKBOXES,
   ELEMENT_STATIC_SELECT, ELEMENT_USERS_SELECT,
   ELEMENT_CHANNELS_SELECT, ELEMENT_CONVERSATIONS_SELECT, ELEMENT_EXTERNAL_SELECT,
   ELEMENT_EXTERNAL_MULTI_SELECT, ELEMENT_USERS_MULTI_SELECT,
@@ -17,14 +22,6 @@ import {
   optionGroups,
   TEXT_FORMAT_PLAIN,
 } from '../src/object'
-
-const {
-  image, button,
-  staticSelect, usersSelect, channelsSelect, conversationsSelect, externalSelect,
-  multiStaticSelect, multiUsersSelect, multiChannelsSelect,
-  multiExternalSelect, multiConversationsSelect,
-  overflow, datePicker, plainTextInput,
-} = element
 
 describe('Elements test suit', () => {
   const actionId = 'my-action'
@@ -488,6 +485,86 @@ describe('Elements test suit', () => {
       it('should throw error on missing actionId', () => {
         expect(() => datePicker(undefined)).to.throw('ActionId is required')
       })
+    })
+  })
+
+  context('Radio buttons', () => {
+    const option1 = option('option 1', 'option-1')
+    const option2 = option('option 2', 'option-2')
+
+    const options = [
+      option1, option2,
+    ]
+
+    it('should return basic radio buttons', () => {
+      const expectedObject = {
+        type: ELEMENT_RADIO_BUTTONS,
+        action_id: actionId,
+        options: [...options],
+      }
+      const rButtons = radioButtons(actionId, options)
+      expect(rButtons).deep.eql(expectedObject)
+    })
+
+    it('should return fully configured radio buttons', () => {
+      const expectedObject = {
+        type: ELEMENT_RADIO_BUTTONS,
+        action_id: actionId,
+        initial_option: option1,
+        options: [...options],
+        confirm: confirmObj,
+      }
+      const rButtons = radioButtons(
+        actionId, options, {
+          initialOption: option1, confirm: confirmObj,
+        },
+      )
+      expect(rButtons).deep.eql(expectedObject)
+    })
+
+    it('should throw errors', () => {
+      expect(() => radioButtons()).to.throw('ActionId is required')
+      expect(() => radioButtons(actionId)).to.throw('Options have to be not-empty array of options objects')
+    })
+  })
+
+  context('Checkboxes', () => {
+    const option1 = option('option 1', 'option-1')
+    const option2 = option('option 2', 'option-2')
+    const option3 = option('option 3', 'option-3')
+
+    const options = [
+      option1, option2, option3,
+    ]
+
+    it('should return basic checkboxes', () => {
+      const expectedObject = {
+        type: ELEMENT_CHECKBOXES,
+        action_id: actionId,
+        options: [...options],
+      }
+      expect(
+        checkboxes(actionId, options),
+      ).deep.eql(expectedObject)
+    })
+
+    it('should return fully configured checkboxes', () => {
+      const expectedObject = {
+        type: ELEMENT_CHECKBOXES,
+        action_id: actionId,
+        initial_options: [option1, option2],
+        options: [...options],
+        confirm: confirmObj,
+      }
+
+      expect(
+        checkboxes(actionId, options, { initialOptions: [option1, option2], confirm: confirmObj }),
+      ).deep.eql(expectedObject)
+    })
+
+    it('should throw errors', () => {
+      expect(() => checkboxes()).to.throw('ActionId is required')
+      expect(() => checkboxes(actionId)).to.throw('Options have to be not-empty array of options objects')
     })
   })
 

@@ -1,6 +1,17 @@
 import { expect } from 'chai'
 import {
   modal, home, VIEW_MODAL, VIEW_HOME,
+  VIEW_TITLE_TEXT_ERROR,
+  VIEW_NO_BLOCKS_ERROR,
+  VIEW_TOO_MANY_BLOCKS_ERROR,
+  VIEW_SUBMIT_TEXT_ERROR,
+  VIEW_CLOSE_TEXT_ERROR,
+  VIEW_PMD_TOO_LONG_ERROR,
+  VIEW_CALLBACK_ID_ERROR,
+  VIEW_CLEAR_ON_CLOSE_ERROR,
+  VIEW_NOTIFY_ON_CLOSE_ERROR,
+  VIEW_HASH_ERROR,
+  VIEW_EXTERNAL_ID_ERROR,
 } from '../src/view'
 import { text } from '../src/object'
 import { divider } from '../src/block'
@@ -86,11 +97,11 @@ describe('Modal view', () => {
     })
 
     it('should prevent modal without title', () => {
-      expect(() => modal()).to.throw()
+      expect(() => modal()).to.throw(VIEW_TITLE_TEXT_ERROR)
     })
 
     it('should prevent modal with too long title', () => {
-      expect(() => modal('This title is way too long to pass 24 characters limit')).to.throw()
+      expect(() => modal('This title is way too long to pass 24 characters limit')).to.throw(VIEW_TITLE_TEXT_ERROR)
     })
 
     it('should prevent modal with too long submit', () => {
@@ -100,21 +111,21 @@ describe('Modal view', () => {
         {
           submitText: 'This title is way too long to pass 24 characters limit',
         },
-      )).to.throw()
+      )).to.throw(VIEW_SUBMIT_TEXT_ERROR)
     })
 
-    it('should prevent modal with too long submit', () => {
+    it('should prevent modal with too long close', () => {
       expect(() => modal(
         titleText,
         dummyBlocks,
         {
           closeText: 'This title is way too long to pass 24 characters limit',
         },
-      )).to.throw()
+      )).to.throw(VIEW_CLOSE_TEXT_ERROR)
     })
 
     it('should prevent no blocks case', () => {
-      expect(() => modal(titleText)).to.throw()
+      expect(() => modal(titleText)).to.throw(VIEW_NO_BLOCKS_ERROR)
     })
 
     it('should prevent more than 100 blocks case', () => {
@@ -122,7 +133,7 @@ describe('Modal view', () => {
       for (let i = 0; i <= 100; i += 1) {
         tooManyBlocks.push(divider())
       }
-      expect(() => modal(tooManyBlocks)).to.throw()
+      expect(() => modal(titleText, tooManyBlocks)).to.throw(VIEW_TOO_MANY_BLOCKS_ERROR)
     })
 
     it('should prevent too large metadata', () => {
@@ -131,44 +142,44 @@ describe('Modal view', () => {
         tooManyBlocks.push(divider())
       }
 
-      expect(() => modal(dummyBlocks, {
+      expect(() => modal(titleText, dummyBlocks, {
         privateMetadata: tooManyBlocks,
-      })).to.throw()
+      })).to.throw(VIEW_PMD_TOO_LONG_ERROR)
     })
 
     it('should prevent no-string callbackId', () => {
-      expect(() => modal(dummyBlocks, {
+      expect(() => modal(titleText, dummyBlocks, {
         callbackId: true,
-      })).to.throw()
+      })).to.throw(VIEW_CALLBACK_ID_ERROR)
     })
 
     it('should prevent too long callbackId', () => {
-      expect(() => modal(dummyBlocks, {
+      expect(() => modal(titleText, dummyBlocks, {
         callbackId: 'aasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdsd',
-      })).to.throw()
+      })).to.throw(VIEW_CALLBACK_ID_ERROR)
     })
 
     it('should prevent non-boolean clearOnClose', () => {
-      expect(() => modal(dummyBlocks, {
+      expect(() => modal(titleText, dummyBlocks, {
         clearOnClose: 'abc',
-      })).to.throw()
+      })).to.throw(VIEW_CLEAR_ON_CLOSE_ERROR)
     })
 
     it('should prevent non-boolean clearOnClose', () => {
-      expect(() => modal(dummyBlocks, {
+      expect(() => modal(titleText, dummyBlocks, {
         notifyOnClose: 'abc',
-      })).to.throw()
+      })).to.throw(VIEW_NOTIFY_ON_CLOSE_ERROR)
     })
 
     it('should prevent hash non-string', () => {
-      expect(() => modal(dummyBlocks, {
+      expect(() => modal(titleText, dummyBlocks, {
         hash: true,
-      })).to.throw()
+      })).to.throw(VIEW_HASH_ERROR)
     })
     it('should prevent externalId non-string', () => {
-      expect(() => modal(dummyBlocks, {
+      expect(() => modal(titleText, dummyBlocks, {
         externalId: true,
-      })).to.throw()
+      })).to.throw(VIEW_EXTERNAL_ID_ERROR)
     })
   })
 
@@ -202,24 +213,25 @@ describe('Modal view', () => {
       expect(result).eql(expectedObject)
     })
     it('should prevent no blocks', () => {
-      expect(() => home([])).to.throw()
+      expect(() => home([])).to.throw(VIEW_NO_BLOCKS_ERROR)
+      expect(() => home()).to.throw(VIEW_NO_BLOCKS_ERROR)
     })
     it('should prevent no-string callbackId', () => {
       expect(() => home(dummyBlocks, {
         callbackId: true,
-      })).to.throw()
+      })).to.throw(VIEW_CALLBACK_ID_ERROR)
     })
 
     it('should prevent too long callbackId', () => {
       expect(() => home(dummyBlocks, {
         callbackId: 'aasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdsd',
-      })).to.throw()
+      })).to.throw(VIEW_CALLBACK_ID_ERROR)
     })
 
     it('should prevent externalId non-string', () => {
       expect(() => home(dummyBlocks, {
         externalId: true,
-      })).to.throw()
+      })).to.throw(VIEW_EXTERNAL_ID_ERROR)
     })
 
     it('should prevent more than 100 blocks case', () => {
@@ -227,7 +239,7 @@ describe('Modal view', () => {
       for (let i = 0; i <= 100; i += 1) {
         tooManyBlocks.push(divider())
       }
-      expect(() => modal(tooManyBlocks)).to.throw()
+      expect(() => home(tooManyBlocks)).to.throw(VIEW_TOO_MANY_BLOCKS_ERROR)
     })
 
 
@@ -239,7 +251,7 @@ describe('Modal view', () => {
 
       expect(() => home(dummyBlocks, {
         privateMetadata: tooManyBlocks,
-      })).to.throw()
+      })).to.throw(VIEW_PMD_TOO_LONG_ERROR)
     })
   })
 })

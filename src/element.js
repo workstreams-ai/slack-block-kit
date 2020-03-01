@@ -4,9 +4,6 @@ import isNumber from 'lodash.isnumber'
 import { isPresentString, typedWithoutUndefined } from './utils'
 import { text } from './object'
 
-// element types
-export const ELEMENT_IMAGE = 'image'
-export const ELEMENT_BUTTON = 'button'
 
 // selects
 export const ELEMENT_STATIC_SELECT = 'static_select'
@@ -25,6 +22,10 @@ export const ELEMENT_CHANNELS_MULTI_SELECT = 'multi_channels_select'
 export const ELEMENT_OVERFLOW = 'overflow'
 export const ELEMENT_DATEPICKER = 'datepicker'
 export const ELEMENT_PLAIN_TEXT_INPUT = 'plain_text_input'
+export const ELEMENT_IMAGE = 'image'
+export const ELEMENT_BUTTON = 'button'
+export const ELEMENT_RADIO_BUTTONS = 'radio_buttons'
+export const ELEMENT_CHECKBOXES = 'checkboxes'
 
 /**
  * BlockKit Element specific errors
@@ -173,6 +174,49 @@ const button = (actionId, textValue, {
     value,
     confirm,
     style,
+  })
+
+/**
+ * Radio buttons
+ *
+ * @param {string} actionId - required actionId
+ * @param {array} options - required options
+ * @param {object} opts - { initialOption, confirm }
+ *
+ * @returns {object}
+ */
+const radioButtons = (
+  actionId, options,
+  { initialOption, confirm } = {},
+) => checkActionIdProp(actionId)
+  && checkOptionsArray(options)
+  && typedWithoutUndefined(ELEMENT_RADIO_BUTTONS, {
+    action_id: actionId,
+    options,
+    initial_option: initialOption,
+    confirm,
+  })
+
+/**
+ * Checkboxes
+ *
+ * @param {string} actionId - required actionId
+ * @param {array} options - required options
+ * @param {object} opts - { initialOptions, confirm }
+ *
+ * @returns {object}
+ */
+
+const checkboxes = (
+  actionId, options,
+  { initialOptions, confirm } = {},
+) => checkActionIdProp(actionId)
+  && checkOptionsArray(options)
+  && typedWithoutUndefined(ELEMENT_CHECKBOXES, {
+    action_id: actionId,
+    options,
+    initial_options: initialOptions,
+    confirm,
   })
 
 /**
@@ -463,6 +507,8 @@ export {
   overflow,
   datePicker,
   plainTextInput,
+  radioButtons,
+  checkboxes,
   multiStaticSelect,
   multiChannelsSelect,
   multiExternalSelect,
@@ -481,6 +527,8 @@ export default {
   overflow,
   datePicker,
   plainTextInput,
+  radioButtons,
+  checkboxes,
   multiStaticSelect,
   multiChannelsSelect,
   multiExternalSelect,

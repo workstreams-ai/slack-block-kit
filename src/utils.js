@@ -9,3 +9,7 @@ export const typedWithoutUndefined = (type, props) => omitBy({
   type,
   ...props,
 }, isUndefined)
+
+export const withoutUndefined = props => omitBy({
+  ...props,
+}, isUndefined)
