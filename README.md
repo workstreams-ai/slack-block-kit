@@ -1,7 +1,7 @@
 # Block Kit for Slack
 
 ### This set of functions is following `Slack Block kit documentation` see below
-i
+
 [blocks (section, divider, image, actions, context, input)](https://api.slack.com/reference/block-kit/blocks)
 
 [elements (selects, buttons, overflow, datepicker, image, plainTextInput, checkboxes, radiobuttons)](https://api.slack.com/reference/block-kit/block-elements)
@@ -17,7 +17,7 @@ _Optional_ paramaters are passed in additional argument `opts` object.
 Generic example of required and optional arguments:
 
 ```javascript
-  function(requiredParam1, requiredParam2, requiredParam3, { optionalParam1, optionalParam2 })
+  someElement(requiredParam1, requiredParam2, requiredParam3, { optionalParam1, optionalParam2 })
 ```
 
 For further details on API see [src](https://github.com/workstreams-ai/slack-block-kit/tree/master/src) folder.
