@@ -132,7 +132,7 @@ const buildBasicStaticSelect = (actionId, placeholderText, options, { optionGrou
     // T0D0 add check for optionGroups
     element = {
       ...omit(element, ['options']),
-      ...optionGroups,
+      option_groups: optionGroups,
     }
   }
 
