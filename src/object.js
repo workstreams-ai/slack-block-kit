@@ -9,7 +9,7 @@ const TEXT_FORMAT_MRKDWN = 'mrkdwn'
 
 // conversation types
 const CONVERSATION_TYPE_IM = 'im'
-const CONVERSATION_TYPE_MPIM = 'im'
+const CONVERSATION_TYPE_MPIM = 'mpim'
 const CONVERSATION_TYPE_PRIVATE = 'private'
 const CONVERSATION_TYPE_PUBLIC = 'public'
 
