@@ -1,6 +1,13 @@
 import block from './block'
 import element from './element'
-import object, { TEXT_FORMAT_MRKDWN, TEXT_FORMAT_PLAIN } from './object'
+import object, {
+  TEXT_FORMAT_MRKDWN,
+  TEXT_FORMAT_PLAIN,
+  CONVERSATION_TYPE_IM,
+  CONVERSATION_TYPE_MPIM,
+  CONVERSATION_TYPE_PUBLIC,
+  CONVERSATION_TYPE_PRIVATE,
+} from './object'
 import view from './view'
 
 export {
@@ -19,4 +26,8 @@ export default {
   view,
   TEXT_FORMAT_MRKDWN,
   TEXT_FORMAT_PLAIN,
+  CONVERSATION_TYPE_IM,
+  CONVERSATION_TYPE_MPIM,
+  CONVERSATION_TYPE_PUBLIC,
+  CONVERSATION_TYPE_PRIVATE,
 }
