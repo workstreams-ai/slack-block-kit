@@ -2,11 +2,15 @@ import { expect } from 'chai'
 import {
   TEXT_FORMAT_PLAIN,
   TEXT_FORMAT_MRKDWN,
+  CONVERSATION_TYPE_PUBLIC,
+  CONVERSATION_TYPE_PRIVATE,
+  CONVERSATION_TYPE_MPIM,
   text,
   option,
   optionGroup,
   optionGroups,
   confirm,
+  filter,
 } from '../src/object'
 
 describe('Basic objects test suite', () => {
@@ -215,7 +219,7 @@ describe('Basic objects test suite', () => {
     })
   })
 
-  context('coufirm', () => {
+  context('confirm', () => {
     const titleText = 'Are you sure you want to kill that dragon?'
     const textType = TEXT_FORMAT_MRKDWN
     const textValue = 'It won\'t be easy to drag that dragon from the bottom of the lake. *Are you sure you want to shoot it*?'
@@ -252,5 +256,40 @@ describe('Basic objects test suite', () => {
       expect(() => confirm(titleText, TEXT_FORMAT_PLAIN, textValue, undefined)).to.throw('ConfirmText has to be a string')
       expect(() => confirm(titleText, TEXT_FORMAT_PLAIN, textValue, confirmText, undefined)).to.throw('DenyText has to be a string')
     })
+  })
+  context('filter', () => {
+    it('should create a filter with all passed params', () => {
+      const expectedValue = {
+        include: [CONVERSATION_TYPE_PUBLIC, CONVERSATION_TYPE_PRIVATE],
+        exclude_bot_users: true,
+        exclude_external_shared_channels: true,
+      }
+      expect(filter([CONVERSATION_TYPE_PUBLIC, CONVERSATION_TYPE_PRIVATE], true, true)).deep.eql(expectedValue)
+    })
+    it('should create a filter with all default values', () => {
+      const expectedValue = {
+        exclude_bot_users: false,
+        exclude_external_shared_channels: false,
+      }
+      expect(filter()).deep.eql(expectedValue)
+    })
+    
+    it('should create a filter with default bool values', () => {
+      const expectedValue = {
+        include: [CONVERSATION_TYPE_MPIM],
+        exclude_bot_users: false,
+        exclude_external_shared_channels: false,
+      }
+      expect(filter([CONVERSATION_TYPE_MPIM])).deep.eql(expectedValue)
+    })
+
+
+    it('should throw errors on invalid params', () => {
+      expect(() => filter('something')).to.throw('Filter include has to be an array')
+      expect(() => filter(['something'])).to.throw()
+      expect(() => filter(undefined,'something')).to.throw('Filter excludeExternalSharedChannels has to be boolean')
+      expect(() => filter(undefined, false, 'something')).to.throw('Filter excludeBotUsers has to be boolean')
+    })
+
   })
 })

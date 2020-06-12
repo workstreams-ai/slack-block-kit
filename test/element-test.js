@@ -20,7 +20,10 @@ import {
   option,
   optionGroup,
   optionGroups,
+  filter,
   TEXT_FORMAT_PLAIN,
+  CONVERSATION_TYPE_PRIVATE,
+  CONVERSATION_TYPE_PUBLIC,
 } from '../src/object'
 
 describe('Elements test suit', () => {
@@ -398,6 +401,11 @@ describe('Elements test suit', () => {
           ...multiSelectBaseObject,
           type: ELEMENT_CONVERSATIONS_MULTI_SELECT,
           initial_conversations: [initialConversation],
+          filter: {
+            include: [CONVERSATION_TYPE_PUBLIC, CONVERSATION_TYPE_PRIVATE],
+            exclude_external_shared_channels: false,
+            exclude_bot_users: false,
+          }
         }
         const result = multiConversationsSelect(
           actionId,
@@ -406,6 +414,7 @@ describe('Elements test suit', () => {
             confirm: confirmObj,
             maxSelectedItems,
             initialConversations: [initialConversation],
+            filter: filter([CONVERSATION_TYPE_PUBLIC, CONVERSATION_TYPE_PRIVATE])
           },
         )
         expect(result).eql(expectedObject)

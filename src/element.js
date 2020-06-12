@@ -287,17 +287,18 @@ const usersSelect = (
  *
  * @param {string} actionId - required actionId
  * @param {string} placeholderText - required placeholder text
- * @param {object} opts - { initialConversation, confirm }
+ * @param {object} opts - { initialConversation, confirm, filter }
  *
  * @returns {object}
  */
-const conversationsSelect = (actionId, placeholderText, { initialConversation, confirm } = {}) =>
+const conversationsSelect = (actionId, placeholderText, { initialConversation, confirm, filter } = {}) =>
   checkSelectRequiredProps(actionId, placeholderText)
     && typedWithoutUndefined(ELEMENT_CONVERSATIONS_SELECT, {
       action_id: actionId,
       placeholder: text(placeholderText),
       initial_conversation: initialConversation,
       confirm,
+      filter
     })
 
 /**
@@ -429,19 +430,20 @@ const multiChannelsSelect = (
  *
  * @param {string} actionId - required actionId
  * @param {string} placeholderText - required placeholder text
- * @param {object} opts - { initialConversations, confirm, maxSelectedItems}
+ * @param {object} opts - { initialConversations, confirm, maxSelectedItems, filter }
  * @returns {object}
  */
 const multiConversationsSelect = (
   actionId,
   placeholderText,
-  { initialConversations, maxSelectedItems, confirm } = {},
+  { initialConversations, maxSelectedItems, confirm, filter } = {},
 ) => checkSelectRequiredProps(actionId, placeholderText)
   && typedWithoutUndefined(ELEMENT_CONVERSATIONS_MULTI_SELECT, {
     action_id: actionId,
     placeholder: text(placeholderText),
     initial_conversations: initialConversations,
     confirm,
+    filter,
     max_selected_items: maxSelectedItems,
   })
 

@@ -7,6 +7,16 @@ import { withoutUndefined, isPresentString, typedWithoutUndefined } from './util
 const TEXT_FORMAT_PLAIN = 'plain_text'
 const TEXT_FORMAT_MRKDWN = 'mrkdwn'
 
+// conversation types
+const CONVERSATION_TYPE_IM = 'im'
+const CONVERSATION_TYPE_MPIM = 'im'
+const CONVERSATION_TYPE_PRIVATE = 'private'
+const CONVERSATION_TYPE_PUBLIC = 'public'
+
+const allowedFilterIncludes = [
+  CONVERSATION_TYPE_IM, CONVERSATION_TYPE_MPIM, CONVERSATION_TYPE_PUBLIC, CONVERSATION_TYPE_PRIVATE
+]
+
 /**
  * BlockKit Object specific error
  * catch it if you're interested
@@ -127,6 +137,42 @@ const optionGroups = (optionGroupObjects) => {
   }
 }
 
+
+/**
+ * Filter object
+ *
+ * @param {array}] include - one or more from CONVERSATIION_TYPE 
+ * @param {boolean} excludeSharedChannels - exclude shared channels
+ * @param {boolean} excludeBotUsers - exclude bot users
+ *
+ * @returns {object}
+ */
+
+const filter = (include, excludeExternalSharedChannels = false, excludeBotUsers = false) => {
+  if (include) {
+    if (!Array.isArray(include)) {
+      throw new ObjectError('Filter include has to be an array')
+    }
+    const hasInvalidFields = include.reduce((acc, field) => !allowedFilterIncludes.includes(field), false)
+    if (hasInvalidFields) {
+      throw new ObjectError(`Filter include has to be one of ${allowedFilterIncludes.join(', ')}`)
+    }
+  }
+  
+  if (!isBoolean(excludeBotUsers)) {
+    throw new ObjectError('Filter excludeBotUsers has to be boolean')
+  }
+  if (!isBoolean(excludeExternalSharedChannels)) {
+    throw new ObjectError('Filter excludeExternalSharedChannels has to be boolean')
+  }
+
+  return withoutUndefined({
+    include,
+    exclude_external_shared_channels: excludeExternalSharedChannels,
+    exclude_bot_users: excludeBotUsers,
+  })
+}
+
 /**
  * confirm dialog
  *
@@ -136,7 +182,7 @@ const optionGroups = (optionGroupObjects) => {
  * @param {string} confirmText - confirm button text value
  * @param {string} denyText - deny button text value
  *
- * @returns {undefined}
+ * @returns {object}
  */
 const confirm = (titleText, textType, textValue, confirmText, denyText) => {
   if (!isPresentString(titleText, 100)) {
@@ -173,14 +219,20 @@ export default {
   option,
   optionGroup,
   optionGroups,
+  filter,
 }
 
 export {
   text,
   confirm,
   option,
+  filter,
   optionGroup,
   optionGroups,
   TEXT_FORMAT_PLAIN,
   TEXT_FORMAT_MRKDWN,
+  CONVERSATION_TYPE_IM,
+  CONVERSATION_TYPE_MPIM,
+  CONVERSATION_TYPE_PUBLIC,
+  CONVERSATION_TYPE_PRIVATE,
 }
