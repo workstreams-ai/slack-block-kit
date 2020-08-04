@@ -1,6 +1,6 @@
 import isObject from 'lodash.isobject'
 import omit from 'lodash.omit'
-import { typedWithoutUndefined } from './utils'
+import { isPresentString, typedWithoutUndefined } from './utils'
 
 import {
   text, TEXT_FORMAT_MRKDWN, TEXT_FORMAT_PLAIN,
@@ -34,9 +34,10 @@ const BLOCK_IMAGE = 'image'
 const BLOCK_ACTIONS = 'actions'
 const BLOCK_CONTEXT = 'context'
 const BLOCK_INPUT = 'input'
+const BLOCK_HEADER = 'header'
 
 const SUPPORTED_BLOCKS = [
-  BLOCK_SECTION, BLOCK_DIVIDER, BLOCK_CONTEXT, BLOCK_ACTIONS, BLOCK_IMAGE, BLOCK_INPUT,
+  BLOCK_SECTION, BLOCK_DIVIDER, BLOCK_CONTEXT, BLOCK_ACTIONS, BLOCK_IMAGE, BLOCK_INPUT, BLOCK_HEADER,
 ]
 
 const VALID_CONTEXT_ELEMENTS = [ELEMENT_IMAGE, TEXT_FORMAT_MRKDWN, TEXT_FORMAT_PLAIN]
@@ -68,6 +69,13 @@ class BlockError extends Error {
 const isValidBlockType = (type) => {
   if (!SUPPORTED_BLOCKS.includes(type)) {
     throw new BlockError(`Unsupported block type '${type}'`)
+  }
+  return true
+}
+
+const isValidHeaderBlock = headerText => {
+  if (!isPresentString(headerText, 3000)) {
+    throw new BlockError('Header block needs to have headerText')
   }
   return true
 }
@@ -213,6 +221,21 @@ const input = (labelText, element, { hintText, blockId, optional } = {}) =>
     optional,
   })
 
+/**
+ * HeaderBlock
+ *
+ * @param {string} headerText - required header text
+ * @param {object} opts - { blockId }
+ *
+ * @returns {object}
+ */
+const header = (headerText,{ blockId } = {}) =>
+  isValidHeaderBlock(headerText) && buildBlock(BLOCK_HEADER, {
+    text: text(headerText),
+    blockId,
+  })
+
+
 
 export default {
   section,
@@ -221,6 +244,7 @@ export default {
   actions,
   context,
   input,
+  header,
 }
 
 export {
@@ -230,6 +254,7 @@ export {
   actions,
   context,
   input,
+  header,
   buildBlock,
   BLOCK_SECTION,
   BLOCK_DIVIDER,
@@ -237,4 +262,5 @@ export {
   BLOCK_ACTIONS,
   BLOCK_CONTEXT,
   BLOCK_INPUT,
+  BLOCK_HEADER,
 }

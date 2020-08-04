@@ -176,10 +176,10 @@ describe('Elements test suit', () => {
           ...optionGroupsObj,
         }
         expect(staticSelect(
-          actionId, placeholderText, undefined, { optionGroups: optionGroupsObj },
+          actionId, placeholderText, undefined, { optionGroups: optionGroupsObj.option_groups },
         )).eql(expectedObject)
         expect(staticSelect(
-          actionId, placeholderText, options, { optionGroups: optionGroupsObj },
+          actionId, placeholderText, options, { optionGroups: optionGroupsObj.option_groups },
         )).eql(expectedObject)
       })
 

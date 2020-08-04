@@ -5,6 +5,7 @@ import {
   image,
   actions,
   input,
+  header,
   context as blockContext,
   BLOCK_SECTION,
   BLOCK_DIVIDER,
@@ -12,6 +13,7 @@ import {
   BLOCK_ACTIONS,
   BLOCK_CONTEXT,
   BLOCK_INPUT,
+  BLOCK_HEADER,
   buildBlock,
 } from '../src/block'
 
@@ -191,4 +193,31 @@ describe('BlockKit blocks', () => {
       expect(() => input()).to.throw('Input block needs to have a labelText')
     })
   })
+
+  context('header blocks', () => {
+    const headerText = 'some important header'
+    const blockId = 'my-block-id'
+    const basicExpectedOutput = {
+      type: BLOCK_HEADER,
+      text: text(headerText),
+    }
+
+    it('should return basic mandatory input', () => {
+      expect(header(headerText)).eql(basicExpectedOutput)
+    })
+
+    it('should return full input configured', () => {
+      const expectedOutput = {
+        ...basicExpectedOutput,
+        block_id: blockId,
+      }
+
+      expect(header(headerText, { blockId })).eql(expectedOutput)
+    })
+
+    it('should prevent no header text', () => {
+      expect(() => header()).to.throw('Header block needs to have headerText')
+    })
+  })
+
 })
