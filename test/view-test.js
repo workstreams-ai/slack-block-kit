@@ -256,7 +256,7 @@ describe('Modal view', () => {
     })
   })
 
-  context.only('Workflow step', () => {
+  context('Workflow step', () => {
      it('should produce basic workflow step without options', () => {
       const expectedObject = {
         type: VIEW_WORKFLOW_STEP,
