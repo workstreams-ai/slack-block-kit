@@ -14,6 +14,7 @@ export class ViewError extends Error {
 
 export const VIEW_MODAL = 'modal'
 export const VIEW_HOME = 'home'
+export const VIEW_WORKFLOW_STEP = 'workflow_step'
 
 export const VIEW_TITLE_TEXT_ERROR = 'TitleText has to be a string max 24 characters long'
 export const VIEW_NO_BLOCKS_ERROR = 'Provide at least 1 block'
@@ -173,7 +174,44 @@ export const modal = (
   })
 }
 
+export const workflowStep = (
+  blocks,
+  {
+    privateMetadata,
+    callbackId,
+  } = {},
+) => {
+  let privateMetadataString
+  
+  if (!blocks.length) {
+    throw new ViewError(VIEW_NO_BLOCKS_ERROR)
+  }
+
+  if (blocks.length > 100) {
+    throw new ViewError(VIEW_TOO_MANY_BLOCKS_ERROR)
+  }
+
+  if (privateMetadata) {
+    privateMetadataString = serializePrivateMetadata(privateMetadata)
+
+    if (!isPresentString(privateMetadataString, 3000)) {
+      throw new Error('TOOL LONG MD')
+    }
+  }
+
+  if (callbackId && !isPresentString(callbackId)) {
+    throw new Error('CALLBACK ERR')
+  }
+
+  return typedWithoutUndefined(VIEW_WORKFLOW_STEP, {
+    blocks,
+    private_metadata: privateMetadataString || undefined,
+    callback_id: callbackId,
+  })
+}
+
 export default {
   modal,
   home,
+  workflowStep,
 }

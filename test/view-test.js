@@ -1,6 +1,7 @@
 import { expect } from 'chai'
 import {
-  modal, home, VIEW_MODAL, VIEW_HOME,
+  modal, home, workflowStep,
+  VIEW_MODAL, VIEW_HOME, VIEW_WORKFLOW_STEP,
   VIEW_TITLE_TEXT_ERROR,
   VIEW_NO_BLOCKS_ERROR,
   VIEW_TOO_MANY_BLOCKS_ERROR,
@@ -252,6 +253,48 @@ describe('Modal view', () => {
       expect(() => home(dummyBlocks, {
         privateMetadata: tooManyBlocks,
       })).to.throw(VIEW_PMD_TOO_LONG_ERROR)
+    })
+  })
+
+  context.only('Workflow step', () => {
+     it('should produce basic workflow step without options', () => {
+      const expectedObject = {
+        type: VIEW_WORKFLOW_STEP,
+        blocks: dummyBlocks,
+      }
+
+      expect(workflowStep(dummyBlocks)).eql(expectedObject)
+    })
+    
+    it('should produce full workflow step with all options', () => {
+      const expectedObject = {
+        type: VIEW_WORKFLOW_STEP,
+        blocks: dummyBlocks,
+        private_metadata: JSON.stringify(privateMetadataObject),
+        callback_id: callbackId,
+      }
+
+      const result = workflowStep(
+        dummyBlocks,
+        {
+          privateMetadata: privateMetadataObject,
+          callbackId,
+        },
+      )
+
+      expect(result).eql(expectedObject)
+    })
+
+    it('should prevent more than 100 blocks case', () => {
+      const tooManyBlocks = []
+      for (let i = 0; i <= 100; i += 1) {
+        tooManyBlocks.push(divider())
+      }
+      expect(() => workflowStep(tooManyBlocks)).to.throw(VIEW_TOO_MANY_BLOCKS_ERROR)
+    })
+    
+    it('should prevent no blocks case', () => {
+      expect(() => workflowStep([])).to.throw(VIEW_NO_BLOCKS_ERROR)
     })
   })
 })

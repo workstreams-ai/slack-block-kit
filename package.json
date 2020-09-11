@@ -1,6 +1,6 @@
 {
   "name": "slack-block-kit",
-  "version": "0.9.11",
+  "version": "0.9.13",
   "description": "",
   "main": "dist/index.js",
   "files": [
