@@ -4,13 +4,13 @@ import {
   staticSelect, usersSelect, channelsSelect, conversationsSelect, externalSelect,
   multiStaticSelect, multiUsersSelect, multiChannelsSelect,
   multiExternalSelect, multiConversationsSelect,
-  overflow, datePicker, plainTextInput,
+  overflow, datePicker, plainTextInput, timePicker,
   ELEMENT_IMAGE, ELEMENT_BUTTON, ELEMENT_RADIO_BUTTONS, ELEMENT_CHECKBOXES,
   ELEMENT_STATIC_SELECT, ELEMENT_USERS_SELECT,
   ELEMENT_CHANNELS_SELECT, ELEMENT_CONVERSATIONS_SELECT, ELEMENT_EXTERNAL_SELECT,
   ELEMENT_EXTERNAL_MULTI_SELECT, ELEMENT_USERS_MULTI_SELECT,
   ELEMENT_CHANNELS_MULTI_SELECT, ELEMENT_STATIC_MULTI_SELECT,
-  ELEMENT_CONVERSATIONS_MULTI_SELECT,
+  ELEMENT_CONVERSATIONS_MULTI_SELECT, ELEMENT_TIMEPICKER,
   ELEMENT_OVERFLOW, ELEMENT_DATEPICKER, ELEMENT_PLAIN_TEXT_INPUT,
 } from '../src/element'
 
@@ -495,6 +495,36 @@ describe('Elements test suit', () => {
         expect(() => datePicker(undefined)).to.throw('ActionId is required')
       })
     })
+    context('time picker element', () => {
+      const placeholderText = 'Pick a time'
+
+      it('should return basic timePicker', () => {
+        const expectedObject = {
+          type: ELEMENT_TIMEPICKER,
+          action_id: actionId,
+        }
+        expect(timePicker(actionId)).eql(expectedObject)
+      })
+
+      it('should return advanced  timePicker', () => {
+        const initialTime = '23:23'
+        const expectedObject = {
+          type: ELEMENT_TIMEPICKER,
+          action_id: actionId,
+          placeholder: text(placeholderText),
+          initial_time: initialTime,
+          confirm: confirmObj,
+        }
+
+        expect(
+          timePicker(actionId, { placeholderText, initialTime, confirm: confirmObj }),
+        ).deep.eql(expectedObject)
+      })
+      it('should throw error on missing actionId', () => {
+        expect(() => timePicker(undefined)).to.throw('ActionId is required')
+      })
+    })
+
   })
 
   context('Radio buttons', () => {

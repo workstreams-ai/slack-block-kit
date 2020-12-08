@@ -296,5 +296,21 @@ describe('Modal view', () => {
     it('should prevent no blocks case', () => {
       expect(() => workflowStep([])).to.throw(VIEW_NO_BLOCKS_ERROR)
     })
+
+    it('should prevent too long metadata', () => {
+      const tooManyBlocks = []
+      for (let i = 0; i <= 500; i += 1) {
+        tooManyBlocks.push(divider())
+      }
+
+      expect(() => workflowStep(dummyBlocks, { privateMetadata: { tooManyBlocks }})).to.throw(VIEW_PMD_TOO_LONG_ERROR)
+    })
+    
+    it('should prevent no-string callbackId', () => {
+      expect(() => workflowStep(dummyBlocks, {
+        callbackId: true,
+      })).to.throw(VIEW_CALLBACK_ID_ERROR)
+    })
+
   })
 })

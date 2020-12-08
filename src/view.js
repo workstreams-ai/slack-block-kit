@@ -195,12 +195,12 @@ export const workflowStep = (
     privateMetadataString = serializePrivateMetadata(privateMetadata)
 
     if (!isPresentString(privateMetadataString, 3000)) {
-      throw new Error('TOOL LONG MD')
+      throw new ViewError(VIEW_PMD_TOO_LONG_ERROR)
     }
   }
 
   if (callbackId && !isPresentString(callbackId)) {
-    throw new Error('CALLBACK ERR')
+    throw new ViewError(VIEW_CALLBACK_ID_ERROR)
   }
 
   return typedWithoutUndefined(VIEW_WORKFLOW_STEP, {

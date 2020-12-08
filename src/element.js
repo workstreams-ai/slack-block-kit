@@ -21,6 +21,7 @@ export const ELEMENT_CHANNELS_MULTI_SELECT = 'multi_channels_select'
 
 export const ELEMENT_OVERFLOW = 'overflow'
 export const ELEMENT_DATEPICKER = 'datepicker'
+export const ELEMENT_TIMEPICKER = 'timepicker'
 export const ELEMENT_PLAIN_TEXT_INPUT = 'plain_text_input'
 export const ELEMENT_IMAGE = 'image'
 export const ELEMENT_BUTTON = 'button'
@@ -348,12 +349,29 @@ const overflow = (actionId, options, { confirm } = {}) =>
 const datePicker = (actionId, { placeholderText, initialDate, confirm } = {}) =>
   checkActionIdProp(actionId)
     && typedWithoutUndefined(ELEMENT_DATEPICKER, {
-      type: ELEMENT_DATEPICKER,
       action_id: actionId,
       placeholder: placeholderText ? text(placeholderText) : undefined,
       initial_date: initialDate,
       confirm,
     })
+
+/**
+ * TimePicker element
+ *
+ * @param {string} actionId - required actionId
+ * @param {object} opts - { placeholderText, initialTime, confirm }
+ *
+ * @returns {object}
+ */
+const timePicker = (actionId, { placeholderText, initialTime, confirm } = {}) =>
+  checkActionIdProp(actionId)
+    && typedWithoutUndefined(ELEMENT_TIMEPICKER, {
+      action_id: actionId,
+      placeholder: placeholderText ? text(placeholderText) : undefined,
+      initial_time: initialTime,
+      confirm,
+    })
+
 
 /**
  * PlainTextInput element
@@ -508,6 +526,7 @@ export {
   channelsSelect,
   overflow,
   datePicker,
+  timePicker,
   plainTextInput,
   radioButtons,
   checkboxes,
@@ -528,6 +547,7 @@ export default {
   channelsSelect,
   overflow,
   datePicker,
+  timePicker,
   plainTextInput,
   radioButtons,
   checkboxes,
