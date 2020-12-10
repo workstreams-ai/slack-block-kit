@@ -2,7 +2,7 @@
 
 ### This set of functions is following `Slack Block kit documentation` see below
 
-[blocks (section, divider, image, actions, context, input)](https://api.slack.com/reference/block-kit/blocks)
+[blocks (section, divider, image, actions, context, input, header)](https://api.slack.com/reference/block-kit/blocks)
 
 [elements (selects, buttons, overflow, datepicker, image, plainTextInput, checkboxes, radiobuttons)](https://api.slack.com/reference/block-kit/block-elements)
 
@@ -40,7 +40,7 @@ const {
   usersSelect, conversationsSelect, channelsSelect,
   datePicker,
 } = element
-const { section, actions, divider, context, image } = block
+const { section, actions, divider, context, image, header } = block
 
 const blocks = [
   section(
